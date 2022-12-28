@@ -1,0 +1,7 @@
+{
+  "name": "Antifurto",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
