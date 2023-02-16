@@ -1,0 +1,20 @@
+<headers>
+
+  <div class="ion-padding">
+    <div class="ion-text-center">
+      <h2>I tuoi antifurti</h2>
+      <p>Crea un nuovo antifurto o seleziona uno esistente</p>
+    </div>
+    <div>
+      <lista-antifurti [antifurtiCliente]="antifurti">
+      </lista-antifurti>
+    </div>
+    <!--    <ion-button (click)="changePage()">dashboard</ion-button>-->
+    <ion-button shape="circle" (click)="manageAntifurto()">
+      <ion-icon size="large" claSS="add" slot="icon-only" name="add-outline" ></ion-icon>
+    </ion-button>
+
+  </div>
+
+</headers>
+

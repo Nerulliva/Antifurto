@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Annulla</ion-button>
+    </ion-buttons>
+    <ion-title>{{titolo}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <div class="ion-padding">
+        <form  (ngSubmit)="onSubmit()" [formGroup]="formData">
+          <div *ngIf="tipo === 'addCliente'">
+            <ion-item lines="full">
+              <ion-label position="floating"><strong>Nome:</strong></ion-label>
+              <ion-input
+                type="text"
+                required
+                class="form-control"
+                formControlName="nome">
+              </ion-input>
+            </ion-item>
+
+            <ion-item lines="full">
+              <ion-label position="floating"><strong>Cognome:</strong></ion-label>
+              <ion-input
+                type="text"
+                class="form-control"
+                formControlName="cognome">
+              </ion-input>
+            </ion-item>
+          </div>
+          <div *ngIf="tipo === 'addAntif'">
+            <ion-item lines="full">
+              <ion-label position="floating"><strong>Nome:</strong></ion-label>
+              <ion-input
+                type="text"
+                required
+                class="form-control"
+                formControlName="nome">
+              </ion-input>
+            </ion-item>
+            <ion-item lines="full">
+              <ion-label position="floating"><strong>N. centralina:</strong></ion-label>
+              <ion-input
+                type="number"
+                required
+                class="form-control"
+                formControlName="centralina">
+              </ion-input>
+            </ion-item>
+            <span *ngIf="validNumero()" class=" ion-padding">Numero non valido, deve avere 10 cifre</span>
+
+            <ion-item lines="full">
+              <ion-label position="floating"><strong>Codice:</strong></ion-label>
+              <ion-input
+                type="number"
+                required
+                class="form-control"
+                formControlName="codCentralina">
+              </ion-input>
+            </ion-item>
+            <span *ngIf="validCodCentralina()" class="ion-padding">Numero non valido, deve avere 6 cifre</span>
+          </div>
+          <ion-row>
+            <ion-col>
+              <ion-button [disabled]="!formData.valid" type="submit" expand="block" shape="round">Conferma</ion-button>
+            </ion-col>
+          </ion-row>
+        </form>
+
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-grid>

@@ -1,0 +1,19 @@
+<ion-grid >
+  <ion-row>
+    <ion-col>
+      <div class="ion-text-center">
+        <h4 class="titolo">Lista Antifurti</h4>
+      </div>
+      <ion-list class="ion-padding" [class.container]="!isEmpty">
+        <!--          fare in modo da eliminare cliente con lo swipe-->
+        <ion-item-sliding *ngFor="let antifurto of antifurtiCliente">
+          <ion-item class="ion-text-center">
+            <ion-label>
+              <h3>{{antifurto.nome}}</h3>
+            </ion-label>
+          </ion-item>
+        </ion-item-sliding>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-grid>

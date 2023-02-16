@@ -1,0 +1,25 @@
+
+<!--<div class="ion-text-center">
+  <h4 class="titolo">Lista Accounts</h4>
+</div>-->
+<!--  <div class="container">-->
+  <ion-grid >
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center">
+          <h4 class="titolo">Lista Accounts</h4>
+        </div>
+        <ion-list class="ion-padding" [class.container]="!isEmpty">
+<!--          fare in modo da eliminare cliente con lo swipe-->
+          <ion-item-sliding *ngFor="let cliente of clienti; let i = index">
+            <ion-item class="ion-text-center" (click)="goTo(i)">
+              <ion-label>
+                <h3>{{cliente.nome}} {{cliente.cognome}}</h3>
+              </ion-label>
+            </ion-item>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+<!--</div>-->

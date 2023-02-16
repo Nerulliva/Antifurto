@@ -1,20 +1,25 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<headers>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="ion-padding">
+    <div class="ion-text-center">
+      <h2>Benvenuto</h2>
+      <p>Crea un nuovo account o seleziona uno esistente</p>
+    </div>
+    <div>
+      <lista-clienti
+      [clienti]="clienti">
+      </lista-clienti>
+    </div>
+<!--    <ion-button (click)="changePage()">dashboard</ion-button>-->
+    <ion-button shape="circle"  (click)="manageCliente()">
+     <ion-icon size="large" claSS="add" slot="icon-only" name="add-outline"></ion-icon>
+    </ion-button>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
   </div>
-</ion-content>
+
+<!--  <div id="container">
+    <ion-button expand="block" (click)="cambiaTema()">cambia tema</ion-button>
+    <ion-button expand="block" (click)="darkTema()">dark</ion-button>
+  </div>-->
+</headers>
+

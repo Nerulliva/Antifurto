@@ -24,3 +24,15 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+body{
+  ion-header{
+    ion-title{
+      padding-inline: 0!important;
+      text-align: center;
+      //left: 0.5rem!important;
+      //padding-left: 0.5rem!important;
+    }
+  }
+}
