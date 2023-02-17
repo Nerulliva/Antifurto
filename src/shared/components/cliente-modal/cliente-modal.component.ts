@@ -27,6 +27,7 @@ export class ClienteModalComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    // console.log(`cliente in modal ${this.clientiService.getCliente(0).nome}`)
     console.log(`tipo: ${this.tipo}`);
     if(this.tipo === 'addCliente'){
       this.initForAddCliente()
@@ -50,35 +51,28 @@ export class ClienteModalComponent implements OnInit{
     });
   }
   // @ts-ignore
-  onSubmit() {
-    // this.submitted = true;
+   onSubmit() {
 
-    if (this.tipo === 'addCliente'){
+    if (this.tipo === 'addCliente') {
       let cliente: Cliente = {
         nome: this.formData.get('nome')?.value,
         cognome: this.formData.get('cognome')?.value,
         antifurti: [], // riguardare questo
       }
       this.clientiService.addCliente(cliente);
-      const textForSave = JSON.stringify(cliente);
-      const nominativo = cliente.nome + '_' + cliente.cognome;
-      this.fileManagerService.writeFileOnDevice(textForSave, nominativo);
-      this.fileManagerService.readAppFiles();
+      this.modalCtrl.dismiss(cliente,'confirm');
     }
 
-    if (this.tipo === 'addAntif'){
+    if (this.tipo === 'addAntif') {
       let antifurto: Antifurto = {
         nome: this.formData.get('nome')?.value,
         numCentralina: this.formData.get('centralina')?.value,
         codiceCliente: this.formData.get('codCentralina')?.value
       }
       this.clientiService.addAntifurto(antifurto);
-      const textForSave = JSON.stringify(this.clientiService.getActivedCliente());
-      const nominativo = this.clientiService.getActivedCliente().nome + '_' + this.clientiService.getActivedCliente().cognome;
-      this.fileManagerService.writeFileOnDevice(textForSave, nominativo);
-      this.fileManagerService.readAppFiles();
+      this.modalCtrl.dismiss(antifurto,'confirm');
     }
-    this.confirm();
+     // this.confirm();
   }
 
 

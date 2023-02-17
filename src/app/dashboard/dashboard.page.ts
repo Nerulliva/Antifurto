@@ -4,6 +4,7 @@ import {ClienteModalComponent} from "../../shared/components/cliente-modal/clien
 import {ModalController} from "@ionic/angular";
 import {ClientiService} from "../../shared/service/clienti.service";
 import {Antifurto} from "../../shared/model/cliente.interface";
+import {FileManagerService} from "../../shared/service/file-manager.service";
 
 @Component({
   selector: 'dashboard',
@@ -11,21 +12,24 @@ import {Antifurto} from "../../shared/model/cliente.interface";
   styleUrls: ['./dashboard.page.scss']
 })
 export class DashboardPage implements OnInit{
-
+  //@ts-ignore
   antifurti: Antifurto[] = [];
   index: any;
   modal: any;
 
   constructor(private route: ActivatedRoute,
               private modalCtrl: ModalController,
-              private clienteService: ClientiService) {
+              private clienteService: ClientiService,
+              private fileManager: FileManagerService)
+  {
+    //this.antifurti = [];
   }
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) =>{
         this.index = params['index'];
         this.clienteService.setActivedCliente(this.index);
-        this.antifurti = this.clienteService.getActivedCliente().antifurti;
-        console.log(`nome ${this.clienteService.getActivedCliente().nome}`)
+        this.antifurti = this.clienteService.getActivedCliente()?.antifurti ? this.clienteService.getActivedCliente()?.antifurti : [];
+         console.log(`nome ${this.clienteService.getActivedCliente().nome}`)
         // console.log(`index ${this.index}`)
       }
     );
@@ -41,13 +45,14 @@ export class DashboardPage implements OnInit{
         "tipo": "addAntif"
       }
     });
-    // this.modal.present();
     this.modal.present();
 
-    const {data, role} = await this.modal.onWillDismiss();
+    const {role} = await this.modal.onWillDismiss();
     if (role === 'confirm') {
-      this.clienteService.getActivedCliente().antifurti.push();
       this.antifurti = this.clienteService.getActivedCliente().antifurti;
+      const nominativo = this.clienteService.getNominativo();
+      const textForSave = JSON.stringify(this.clienteService.getActivedCliente());
+      await this.fileManager.writeFileOnDevice(textForSave, nominativo);
      console.log(this.antifurti);
     }
   }

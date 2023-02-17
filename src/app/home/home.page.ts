@@ -24,15 +24,16 @@ export class HomePage implements OnInit{
               private fileManager: FileManagerService) {}
 
   ngOnInit(): void {
-    this.clienti = this.clientiService.getClienti();
-    // this.fileManager.writeDir();
-    this.fileManager.readDirData();
-    this.fileManager.readAppFiles();
+    this.fileManager.writeDir();
+    this.fileManager.read().then(res=>{
+      // console.log(`length res ${res?.length}`);
+      // console.log(` res ${res.toString()}`);
+      // console.log(`valore di res ${res[0].nome}`);
+      this.clientiService.setClienti(res);
+      console.log(`cliente dopo setClienti -> ${this.clientiService.getCliente(0).nome}`)
+      this.clienti = this.clientiService.getClienti();
+    });
   }
-
-/*  changePage(): void{
-    this.router.navigateByUrl('dashboard');
-  }*/
 
   async manageCliente(){
     this.modal = await this.modalCtrl.create({
@@ -46,10 +47,11 @@ export class HomePage implements OnInit{
     });
     this.modal.present();
 
-    const {data, role} = await this.modal.onWillDismiss();
+    const {role} = await this.modal.onWillDismiss();
     if(role === 'confirm'){
       this.clienti = this.clientiService.getClienti();
-      //console.log(this.clienti);
+      const textForSave = JSON.stringify(this.clienti);
+      await this.fileManager.writeFileOnDevice(textForSave, 'clienti');
     }
   }
 

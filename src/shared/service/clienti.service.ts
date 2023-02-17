@@ -1,12 +1,23 @@
 import {Injectable} from "@angular/core";
 import {Antifurto, Cliente} from "../model/cliente.interface";
+import {FileManagerService} from "./file-manager.service";
+
 
 @Injectable({providedIn: 'root'})
 export class ClientiService{
-
   clienti: Cliente[] = [];
   //@ts-ignore
   actived: number;
+
+  constructor(private fileManager: FileManagerService) {
+    console.log('creato');
+    if(this.clienti.length == 0){
+     // console.log('clienti vuota')
+      this.fileManager.read().then(res => {
+        this.clienti = res;
+      });
+    }
+  }
 
   addCliente(cliente: Cliente): void{
     /*let cli = this.clienti.find(el => el.nome === cliente.nome && el.nome === cliente.cognome);
@@ -15,6 +26,12 @@ export class ClientiService{
     }
 */
     this.clienti.push(cliente);
+    console.log(`cliente inserito esterno ${cliente.nome}`)
+    console.log(`cliente dalla lista clienti ${this.clienti[0].nome}`)
+  }
+
+  setClienti(clienti: Cliente[]){
+    this.clienti = clienti;
   }
 
   getCliente(index: number): Cliente{
@@ -34,11 +51,14 @@ export class ClientiService{
   }
 
   getNominativo(): string{
-    return this.getActivedCliente().nome + ' ' + this.getActivedCliente().cognome
+    return this.getActivedCliente().nome + '_' + this.getActivedCliente().cognome
   }
 
   addAntifurto(antifurto: Antifurto){
+    // console.log(`cliente in addAnt ${this.clienti[0]}`);
+    // console.log(`attivo ${this.clienti[this.actived].nome}`)
+    // console.log(`numero attivo ${this.actived}`)
     this.clienti[this.actived].antifurti?.push(antifurto);
-    console.log(`aggiunto ${this.clienti[this.actived].antifurti}`)
+    // console.log(`aggiunto ${this.clienti[this.actived].antifurti}`)
   }
 }

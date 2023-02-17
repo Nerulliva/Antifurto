@@ -1,12 +1,11 @@
-import {Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
+import {Component, DoCheck, Input, OnInit} from "@angular/core";
 import {Cliente} from "../../../shared/model/cliente.interface";
 import {Router} from "@angular/router";
-import {ClientiService} from "../../../shared/service/clienti.service";
 
 @Component({
   selector: 'lista-clienti',
   templateUrl: './lista-clienti.components.html',
-  styleUrls: ['./lista-clienti.components.scss']
+  styleUrls: ['./lista-clienti.components.scss'],
 })
 export class ListaClientiComponents implements OnInit, DoCheck{
   // @ts-ignore
@@ -14,24 +13,27 @@ export class ListaClientiComponents implements OnInit, DoCheck{
   isEmpty: boolean = true;
   oldClienti: Cliente[] = [];
 
-  constructor(private router: Router,
-              private clienteService: ClientiService) {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
-     this.isEmpty = this.clienti.length === 0 ? true : false
+     this.isEmpty = this.clienti?.length === 0 ? true : false
   }
 
   ngDoCheck(): void {
-    if(this.oldClienti.length != this.clienti.length){
-      console.log('cambiato');
-      this.oldClienti = Object.assign(this.clienti);
-      this.isEmpty = this.clienti.length === 0 ? true : false
+    if(this.clienti) {
+      if (this.oldClienti.length != this.clienti?.length) {
+        console.log('cambiato');
+        this.oldClienti = Object.assign(this.clienti);
+        this.isEmpty = this.clienti?.length === 0 ? true : false
+      }
     }
   }
 
   goTo(index: number){
-    this.router.navigateByUrl(`dashboard/${index}`);
+    this.router.navigateByUrl(`dashboard/${index}`).catch(err => {
+      console.log(`errore in lista clienti ${err}`);
+    });
   }
 
 }

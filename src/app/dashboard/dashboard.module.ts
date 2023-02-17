@@ -18,6 +18,7 @@ import {ListaAntifurtiComponent} from "./lista-antifurti/lista-antifurti.compone
   declarations: [
     DashboardPage,
     ListaAntifurtiComponent
-    ]
+  ],
+  providers: []
 })
 export class DashboardModule{}
