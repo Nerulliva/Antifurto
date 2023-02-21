@@ -13,61 +13,33 @@ import {Subscription} from "rxjs";
 })
 export class DashboardPage implements OnInit, OnDestroy{
   //@ts-ignore
-  antifurti: Antifurto[] = [];
+  antifurto: Antifurto;
   index: any;
+  //@ts-ignore
+  idc: number; // index cliente attivo
   modal: any;
   //@ts-ignore
   subscription: Subscription;
 
   constructor(private route: ActivatedRoute,
               private modalCtrl: ModalController,
-              private clienteService: ClientiService)
-  {
-    //this.antifurti = [];
-  }
+              private clienteService: ClientiService) {}
+
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) =>{
-        this.index = params['index'];
-        this.clienteService.print();
-        console.log(`Dashboard: index ${this.index}`)
-        this.clienteService.setActivedCliente(this.index);
-        console.log(`Dashboard: cliente ${this.clienteService.getActivedCliente()}`)
-        // this.antifurti = this.clienteService.getActivedCliente()?.antifurti
-        if(this.antifurti === undefined){
-          console.log(`Dashboard: antifurti undefined`)
-          // this.antifurti = this.clienteService.getActivedCliente()?.antifurti
-        }
+        let param = params['index'];
+        param = param.split('-');
+        this.idc = param[0];
+        this.index=param[1];
+        console.log(`Dashboard: actived ${this.clienteService.actived}`);
+
+        this.subscription = this.clienteService.clientiChanged.subscribe(res=>{
+          this.antifurto = this.clienteService.getCliente(this.idc).antifurti[this.index];
+          console.log(`Dashboard: clienti in subscribe ${JSON.stringify(res)}`);
+          console.log(`Dashboard: antifurto in subscribe ${JSON.stringify(this.antifurto)}`);
+        })
       }
     );
-    this.subscription = this.clienteService.clientiChanged.subscribe((clienti:Cliente[])=>{
-      for(const cliente of clienti){
-        for(const antif of cliente.antifurti){
-          this.antifurti.push(antif);
-        }
-      }
-      console.log(` in subsription ${this.antifurti}`)
-    })
-  }
-
-  async manageAntifurto() {
-    this.modal = await this.modalCtrl.create({
-      component: ClienteModalComponent,
-      backdropDismiss: false,
-      swipeToClose: false,
-      componentProps: {
-        "titolo": "Aggiungi Account",
-        "tipo": "addAntif"
-      }
-    });
-    this.modal.present();
-
-    const {role} = await this.modal.onWillDismiss();
-    if (role === 'confirm') {
-      this.antifurti = this.clienteService.getActivedCliente().antifurti;
-      // const textForSave = JSON.stringify(this.clienteService.getActivedCliente());
-      // await this.fileManager.writeFileOnDevice(textForSave, nominativo);
-     //console.log(this.antifurti);
-    }
   }
 
   ngOnDestroy() {

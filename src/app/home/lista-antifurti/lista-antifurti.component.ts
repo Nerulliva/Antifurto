@@ -3,7 +3,7 @@ import {Antifurto} from "../../../shared/model/cliente.interface";
 import {ClienteModalComponent} from "../../../shared/components/cliente-modal/cliente-modal.component";
 import {ModalController} from "@ionic/angular";
 import {ClientiService} from "../../../shared/service/clienti.service";
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 
 
 @Component({
@@ -18,11 +18,12 @@ export class ListaAntifurtiComponent implements OnInit {
   modal: any;
   oldAntifurti: Antifurto[] =[];
   //@ts-ignore
-  index: number;
+  index: number; // index cliente attivo
 
   constructor(public modalCtrl: ModalController,
               private clientiService: ClientiService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
 
   }
 
@@ -31,30 +32,11 @@ export class ListaAntifurtiComponent implements OnInit {
       this.index = params['id'];
       console.log(`index ${this.index}`)
       this.antifurtiCliente = this.clientiService.getCliente(this.index).antifurti;
-      console.log(`Lista-antifurti: cliService cliIndexAttivo ${this.clientiService.getCliente(0).toString()}`);
+    /*  console.log(`Lista-antifurti: cliService cliIndexAttivo ${this.clientiService.getCliente(0).toString()}`);
       let obj = JSON.stringify(this.clientiService.getCliente(0));
-      console.log(`Lista-antifurti: obj ${obj}`)
+      console.log(`Lista-antifurti: obj ${obj}`)*/
       // console.log(`lista-antifurti cliService cliAttivo ${this.clientiService.getActivedCliente().nome}`);
     })
-  /*  console.log(`Lista-antifurti: cliService Clienti ${this.clientiService.getClienti()}`);
-    console.log(`Lista-antifurti: cliService cliIndexAttivo ${this.clientiService.getActived()}`);
-    console.log(`Lista-antifurti: cliService cliIndexAttivo ${this.clientiService.getCliente(0)}`);
-    // console.log(`lista-antifurti cliService cliAttivo ${this.clientiService.getActivedCliente().nome}`);
-    // console.log(`lista-antifurti cliService cliAttivoAntifurto ${this.clientiService.getActivedCliente().antifurti}`);
-    //
-    console.log(`Lista-antifurti: prima if ${this.antifurtiCliente.length}`);
-    if(this.antifurtiCliente.length === 0){
-      this.antifurtiCliente = this.clientiService.getAntifurticliente();
-      console.log(`Lista-antifurti: dopo if ${this.antifurtiCliente.length}`);
-    }
-    if(!this.antifurtiCliente){
-      console.log('non è')
-     // this.antifurtiCliente = this.clientiService.getActivedCliente().antifurti;
-      // console.log(`length in init ${this.antifurtiCliente.length}`)
-    }/!* else if(this.antifurtiCliente && this.antifurtiCliente.length == 0){
-      console.log(`è ma length 0`)
-    }*!/
-*/
   }
 
   ngDoCheck(): void {
@@ -82,11 +64,11 @@ export class ListaAntifurtiComponent implements OnInit {
       let obj = JSON.stringify(this.clientiService.getCliente(0));
       console.log(`Lista-antifurti: obj in dismiss ${obj}`)
       console.log(`Lista-antifurti: index ${this.index}`)
-      // this.antifurtiCliente = this.clientiService.getActivedCliente().antifurti;
-      // const textForSave = JSON.stringify(this.clienteService.getActivedCliente());
-      // await this.fileManager.writeFileOnDevice(textForSave, nominativo);
-      //console.log(this.antifurti);
     }
+  }
+
+  goTo(index: number){
+    this.router.navigateByUrl(`dashboard/${this.index}-${index}`);
   }
 
 }

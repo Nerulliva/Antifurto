@@ -24,6 +24,8 @@ export class ClientiService{
       console.log(`Clienti-service: clienti vuota`)
       this.fileManager.read().then(res => {
         this.clienti = res;
+        console.log(`ClientiService: dopo read ${JSON.stringify(this.clienti)}`)
+        this.clientiChanged.next(this.clienti.slice());
       });
       if(this.clienti.length > 0){
         console.log(`Clienti-service: clienti ora piena`)
