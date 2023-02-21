@@ -7,6 +7,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 import {SharedModule} from "../../shared/shared.module";
 // component
 import {ListaClientiComponents} from "./lista-clienti/lista-clienti.components";
+import { ListaAntifurtiComponent } from "./lista-antifurti/lista-antifurti.component";
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import {ListaClientiComponents} from "./lista-clienti/lista-clienti.components";
   ],
   declarations: [
     HomePage,
-    ListaClientiComponents
+    ListaClientiComponents,
+    ListaAntifurtiComponent
   ],
   providers: []
 })

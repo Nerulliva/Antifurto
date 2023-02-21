@@ -1,21 +1,24 @@
 <headers>
 
-  <div class="ion-padding">
-    <div class="ion-text-center">
-      <h2>Benvenuto</h2>
-      <p>Crea un nuovo account o seleziona uno esistente</p>
-    </div>
-    <div>
-      <lista-clienti
-      [clienti]="clienti">
-      </lista-clienti>
-    </div>
-<!--    <ion-button (click)="changePage()">dashboard</ion-button>-->
-    <ion-button shape="circle"  (click)="manageCliente()">
-     <ion-icon size="large" class="add" slot="icon-only" name="add-outline"></ion-icon>
-    </ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="ion-padding">
+          <div class="ion-text-center">
+            <h2>Benvenuto</h2>
+            <!--      <p>Crea un nuovo account o seleziona uno esistente</p>-->
+          </div>
+          <!--    si mette se ci sono figli nel router-->
+          <!--    <router-outlet></router-outlet>-->
+          <div class="ion-text-center">
+            <ion-button (click)="start()">Start</ion-button>
+          </div>
 
-  </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 
 <!--  <div id="container">
     <ion-button expand="block" (click)="cambiaTema()">cambia tema</ion-button>
