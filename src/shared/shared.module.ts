@@ -9,11 +9,13 @@ import {ClientiService} from "./service/clienti.service";
 import {FileManagerService} from "./service/file-manager.service";
 import {File} from "@awesome-cordova-plugins/file/ngx";
 import { Diagnostic  } from '@awesome-cordova-plugins/diagnostic/ngx';
+import { ConfirmModalComponent} from "./components/confirm-modal/confirm-modal.component"
 
 @NgModule({
   declarations:[
     HeadersComponent,
-    ClienteModalComponent
+    ClienteModalComponent,
+    ConfirmModalComponent
   ],
   imports:[
     CommonModule,
@@ -29,7 +31,8 @@ import { Diagnostic  } from '@awesome-cordova-plugins/diagnostic/ngx';
   ],
   exports:[
     HeadersComponent,
-    ClienteModalComponent
+    ClienteModalComponent,
+    ConfirmModalComponent
   ]
 })
 export class SharedModule{}

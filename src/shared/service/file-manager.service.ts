@@ -98,7 +98,6 @@ export class FileManagerService{
     })
   }
 
-
   printAppFiles(){
     Filesystem.readdir({
       directory: DATA_DIR,

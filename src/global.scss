@@ -36,3 +36,8 @@ body{
     }
   }
 }
+
+ion-toast.custom-toast::part(message) {
+  font-style: italic;
+  text-align: center;
+}

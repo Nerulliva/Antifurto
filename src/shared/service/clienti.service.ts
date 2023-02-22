@@ -12,26 +12,7 @@ export class ClientiService{
   //@ts-ignore
   actived: number;
 
-  constructor(private fileManager: FileManagerService) {
-    console.log('Clienti-service: creato');
-    console.log(`Clienti-service: length ${this.clienti.length}`);
-    if(!this.clienti){
-      console.log('Clienti-service: non è');
-    } else if(this.clienti === undefined){
-      console.log(`Clienti-service: clienti undefined`)
-    }
-    else if(this.clienti.length === 0){
-      console.log(`Clienti-service: clienti vuota`)
-      this.fileManager.read().then(res => {
-        this.clienti = res;
-        console.log(`ClientiService: dopo read ${JSON.stringify(this.clienti)}`)
-        this.clientiChanged.next(this.clienti.slice());
-      });
-      if(this.clienti.length > 0){
-        console.log(`Clienti-service: clienti ora piena`)
-      }
-    }
-  }
+  constructor(private fileManager: FileManagerService) {}
 
   addCliente(cliente: Cliente): void{
     /*let cli = this.clienti.find(el => el.nome === cliente.nome && el.nome === cliente.cognome);
@@ -73,11 +54,17 @@ export class ClientiService{
   }
 
   getAntifurticliente(){
-    return this.clienti[this.getActived()].antifurti;
+    return this.clienti[this.getActived()].antifurti.slice();
   }
 
   getNominativo(): string{
     return this.getActivedCliente().nome + '_' + this.getActivedCliente().cognome
+  }
+
+  deleteCliente(index: number){
+    this.clienti.splice(index,1);
+    const textForSave = JSON.stringify(this.clienti);
+    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
   }
 
   addAntifurto(antifurto: Antifurto){
@@ -89,18 +76,12 @@ export class ClientiService{
     console.log(`ClientiService: lista clienti in add dopo ${obj2}`)
     const textForSave = JSON.stringify(this.clienti);
     this.fileManager.writeFileOnDevice(textForSave, 'clienti');
-   /* // console.log(`cliente in addAnt ${this.clienti[0]}`);
-     console.log(`attivo ${this.clienti[this.actived].nome}`)
-    // console.log(`numero attivo ${this.actived}`)
-    if(!this.clienti[this.actived].hasOwnProperty('antifurti')){
-      console.log(`ClientiService: antifurto non presente`);
-    }
+  }
 
-    this.clienti[this.actived].antifurti?.push(antifurto);
+  deleteAntifurto(index: number){
+    this.clienti[this.actived].antifurti.splice(index, 1);
     const textForSave = JSON.stringify(this.clienti);
     this.fileManager.writeFileOnDevice(textForSave, 'clienti');
-    this.clientiChanged.next(this.clienti.slice());
-    // console.log(`aggiunto ${this.clienti[this.actived].antifurti}`)*/
   }
 
   print() {

@@ -3,25 +3,29 @@ import {Cliente} from "../../../shared/model/cliente.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ClientiService} from "../../../shared/service/clienti.service";
 import {ClienteModalComponent} from "../../../shared/components/cliente-modal/cliente-modal.component";
-import {ModalController} from "@ionic/angular";
+import {ModalController, ToastController} from "@ionic/angular";
+import {ConfirmModalComponent} from "../../../shared/components/confirm-modal/confirm-modal.component";
 
 @Component({
   selector: 'lista-clienti',
   templateUrl: './lista-clienti.components.html',
   styleUrls: ['./lista-clienti.components.scss'],
 })
-export class ListaClientiComponents implements OnInit, DoCheck{
+export class ListaClientiComponents implements OnInit{
   // @ts-ignore
   // @Input() clienti: Cliente[] = [];
   clienti: Cliente[] = [];
   isEmpty: boolean = true;
   oldClienti: Cliente[] = [];
   modal: any;
+  intervalId: any;
+  modalDemo: any;
 
   constructor(private router: Router,
               private clientiService: ClientiService,
               private modalCtrl: ModalController,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private toast: ToastController) {
   }
 
   ngOnInit() {
@@ -29,23 +33,9 @@ export class ListaClientiComponents implements OnInit, DoCheck{
      // this.isEmpty = this.clienti?.length === 0 ? true : false
   }
 
-  ngDoCheck(): void {
-    /*if(this.clienti && this.clienti.length > 0) {
-      if (this.oldClienti.length != this.clienti?.length) {
-        console.log('cambiato');
-        this.oldClienti = Object.assign(this.clienti);
-        this.isEmpty = this.clienti?.length === 0 ? true : false
-      }
-    }*/
-  }
-
   goTo(index: number){
-    // this.router.navigate([`${index}/antifurti`], {relativeTo: this.route})
-    this.router.navigate([`${index}/antifurti`], {relativeTo: this.route})
     this.clientiService.setActivedCliente(index);
-   /* this.router.navigateByUrl(`dashboard/${index}`).catch(err => {
-      console.log(`errore in lista clienti ${err}`);
-    });*/
+    this.router.navigate([`${index}/antifurti`], {relativeTo: this.route})
   }
 
   async manageCliente(){
@@ -64,9 +54,62 @@ export class ListaClientiComponents implements OnInit, DoCheck{
     const {role} = await this.modal.onWillDismiss();
     if(role === 'confirm'){
       this.clienti = this.clientiService.getClienti();
-      /* const textForSave = JSON.stringify(this.clienti);
-       await this.fileManager.writeFileOnDevice(textForSave, 'clienti');*/
     }
+  }
+
+  onOverlay() {
+    this.modalDemo = true;
+    const self = this;
+    this.intervalId =  setInterval(function() {
+      self.swipeItem();
+    }, 1000);
+  }
+
+  offOverlay() {
+    clearInterval(this.intervalId);
+    //document.getElementById("overlay").style.display = "none";
+    this.modalDemo = false;
+  }
+
+  swipeItem(){
+    const cliente = document.getElementById("overlayItem") as HTMLIonItemSlidingElement;
+    cliente.open('start');
+    cliente.close();
+  }
+
+  async presentToast(message: string,position: 'top' | 'middle' | 'bottom'){
+    const toast = await this.toast.create({
+      duration: 2000,
+      position: position,
+      message: message,
+      cssClass: 'custom-toast'
+    })
+    await toast.present();
+  }
+
+  async elimina(index: number){
+    let nominativo = this.clienti[index].nome + ' ' + this.clienti[index].cognome
+    let info =`Attenzione, si sta per eliminare l'account ${nominativo}. Sei sicuro?`
+
+    this.modal = await this.modalCtrl.create({
+      component: ConfirmModalComponent,
+      backdropDismiss: false,
+      swipeToClose: false,
+      componentProps:{
+        'titolo': 'Elimina Account',
+        'info': info
+      }
+    })
+
+    this.modal.present();
+
+    const {role} = await this.modal.onWillDismiss();
+    if(role ==='conferma'){
+      this.clienti.splice(index, 1);
+      this.clientiService.deleteCliente(index);
+      await this.presentToast(`Account ${nominativo} eliminato`, 'bottom');
+    }
+
   }
 
 }
