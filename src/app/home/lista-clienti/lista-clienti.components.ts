@@ -1,17 +1,18 @@
-import {Component, DoCheck, Input, OnInit} from "@angular/core";
+import {Component, DoCheck, Input, OnDestroy, OnInit} from "@angular/core";
 import {Cliente} from "../../../shared/model/cliente.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ClientiService} from "../../../shared/service/clienti.service";
 import {ClienteModalComponent} from "../../../shared/components/cliente-modal/cliente-modal.component";
 import {ModalController, ToastController} from "@ionic/angular";
 import {ConfirmModalComponent} from "../../../shared/components/confirm-modal/confirm-modal.component";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'lista-clienti',
   templateUrl: './lista-clienti.components.html',
   styleUrls: ['./lista-clienti.components.scss'],
 })
-export class ListaClientiComponents implements OnInit{
+export class ListaClientiComponents implements OnInit,OnDestroy{
   // @ts-ignore
   // @Input() clienti: Cliente[] = [];
   clienti: Cliente[] = [];
@@ -19,7 +20,10 @@ export class ListaClientiComponents implements OnInit{
   oldClienti: Cliente[] = [];
   modal: any;
   intervalId: any;
-  modalDemo: any;
+  modalDemoSwipe: any;
+  modalDemoSwipe2: any;
+// @ts-ignore
+  subscritpion: Subscription;
 
   constructor(private router: Router,
               private clientiService: ClientiService,
@@ -38,42 +42,66 @@ export class ListaClientiComponents implements OnInit{
     this.router.navigate([`${index}/antifurti`], {relativeTo: this.route})
   }
 
-  async manageCliente(){
-    console.log('cliccato')
+  async manageCliente(tipo?: string, index?: number){
+
+    let modalita = tipo && tipo==='addCliente' ? 'addCliente' : 'modifyCliente';
+    let title  = tipo && tipo==='addCliente' ? 'Aggiungi Account' : 'Modifica Account';
+    let i = index ? index : null;
+    // console.log(`index manCli ${i}`)
+    // console.log(`index arg manCli ${index}`)
+
     this.modal = await this.modalCtrl.create({
       component: ClienteModalComponent,
       backdropDismiss: false,
       swipeToClose: false,
       componentProps:{
-        "titolo": "Aggiungi Account",
-        "tipo": "addCliente"
+        "titolo": title,
+        "tipo": modalita,
+        "index": i
       }
     });
     this.modal.present();
 
     const {role} = await this.modal.onWillDismiss();
     if(role === 'confirm'){
+      console.log('conferma');
       this.clienti = this.clientiService.getClienti();
     }
   }
 
   onOverlay() {
-    this.modalDemo = true;
+    this.modalDemoSwipe = true;
     const self = this;
     this.intervalId =  setInterval(function() {
       self.swipeItem();
     }, 1000);
   }
 
+  onOverlay2() {
+    this.modalDemoSwipe = true;
+    this.modalDemoSwipe2 = true;
+    const self = this;
+    this.intervalId = setInterval(function() {
+      self.swipeItem2();
+    }, 1000);
+  }
+
   offOverlay() {
     clearInterval(this.intervalId);
     //document.getElementById("overlay").style.display = "none";
-    this.modalDemo = false;
+    this.modalDemoSwipe = false;
+    this.modalDemoSwipe2 = false;
   }
 
   swipeItem(){
     const cliente = document.getElementById("overlayItem") as HTMLIonItemSlidingElement;
     cliente.open('start');
+    cliente.close();
+  }
+
+  swipeItem2(){
+    const cliente = document.getElementById("overlayItem") as HTMLIonItemSlidingElement;
+    cliente.open('end');
     cliente.close();
   }
 
@@ -110,6 +138,10 @@ export class ListaClientiComponents implements OnInit{
       await this.presentToast(`Account ${nominativo} eliminato`, 'bottom');
     }
 
+  }
+
+  ngOnDestroy(): void {
+    this.subscritpion.unsubscribe();
   }
 
 }

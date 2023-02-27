@@ -3,13 +3,13 @@
     <ion-row>
       <ion-col size-xs="10" offset-xs="1" size-sm="5" offset-sm="1" size-md="8" offset-md="2" size-lg="8" offset-lg="2">
         <p class="info ion-text-center">Crea un nuovo account o seleziona uno esistente</p>
-        <p class="info ion-text-center">Scorri verso destra per eliminare. <a role="button" class="pointer" (click)="onOverlay()"> Come?</a> </p>
+        <p class="info ion-text-center">Scorri verso destra per eliminare.<a role="button" class="pointer" (click)="onOverlay()"> Come?</a> </p>
+        <p class="info ion-text-center">Scorri verso sinistra per modificare.<a role="button" class="pointer" (click)="onOverlay2()"> Come?</a> </p>
         <div class="ion-text-center">
           <h4 class="titolo">Lista Accounts</h4>
         </div>
         <!--[class.container]="!isEmpty" -->
         <ion-list class="ion-padding container" >
-<!--          fare in modo da eliminare cliente con lo swipe-->
           <ion-item-sliding *ngFor="let cliente of clienti; let i = index">
             <ion-item-options side="start">
               <ion-item-option color="danger" (click)="elimina(i)">
@@ -21,16 +21,21 @@
                 <h3>{{cliente.nome}} {{cliente.cognome}}</h3>
               </ion-label>
             </ion-item>
+            <ion-item-options side="end">
+              <ion-item-option color="warning" (click)="manageCliente('',i)">
+                <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
           </ion-item-sliding>
         </ion-list>
       </ion-col>
     </ion-row>
-    <ion-button shape="circle" (click)="manageCliente()">
+    <ion-button shape="circle" (click)="manageCliente('addCliente')">
       <ion-icon size="large" class="add" slot="icon-only" name="add-outline"></ion-icon>
     </ion-button>
   </ion-grid>
 
-  <ion-modal [isOpen]="modalDemo" (willDismiss)="offOverlay()">
+  <ion-modal [isOpen]="modalDemoSwipe" (willDismiss)="offOverlay()">
     <ng-template class="ion-text-center">
       <ion-header>
         <ion-toolbar>
@@ -42,7 +47,8 @@
       </ion-header>
       <ion-content calss="ion-padding ion-text-center">
         <div>
-          <p class="info-demo">Fai scorrere l'elemento verso destra per rivelare il pulsante <b>Elimina</b></p>
+          <p *ngIf="modalDemoSwipe && !modalDemoSwipe2" class="info-demo">Fai scorrere l'elemento verso destra per rivelare il pulsante <b>Elimina</b></p>
+          <p *ngIf="modalDemoSwipe && modalDemoSwipe2" class="info-demo">Fai scorrere l'elemento verso sinistra per rivelare il pulsante <b>Modifica</b></p>
           <ion-list class="ion-padding">
             <ion-item-sliding id="overlayItem">
               <ion-item-options side="start">
@@ -51,8 +57,14 @@
                 </ion-item-option>
               </ion-item-options>
               <ion-item>
-                <ion-label class="ion-text-wrap">Elemento da eliminare</ion-label>
+                <ion-label *ngIf="modalDemoSwipe && !modalDemoSwipe2" class="ion-text-wrap">Elemento da eliminare</ion-label>
+                <ion-label *ngIf="modalDemoSwipe && modalDemoSwipe2" class="ion-text-wrap">Elemento da modificare</ion-label>
               </ion-item>
+              <ion-item-options side="end">
+                <ion-item-option color="warning">
+                  <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+                </ion-item-option>
+              </ion-item-options>
             </ion-item-sliding>
           </ion-list>
         </div>

@@ -4,10 +4,10 @@ import {FormsModule} from "@angular/forms";
 import {IonicModule} from "@ionic/angular";
 import {DashboardRoutingModule} from "./dashboard-routing.module";
 import {SharedModule} from "../../shared/shared.module";
+import {ScrollingModule} from "@angular/cdk/scrolling";
 import {DashboardPage} from "./dashboard.page";
-import {ListaAntifurtiComponent} from "../home/lista-antifurti/lista-antifurti.component";
 import {File} from "@awesome-cordova-plugins/file/ngx";
-// import {ListaAntifurtiResolverService} from "../home/lista-antifurti/lista-antifurti-resolver.service";
+import { ListaComandiComponent } from "./lista-comandi/lista-comandi.component";
 
 @NgModule({
   imports: [
@@ -15,15 +15,15 @@ import {File} from "@awesome-cordova-plugins/file/ngx";
     FormsModule,
     IonicModule,
     DashboardRoutingModule,
-    SharedModule
+    SharedModule,
+    ScrollingModule
   ],
   declarations: [
     DashboardPage,
-    // ListaAntifurtiComponent
+    ListaComandiComponent
   ],
   providers: [
-    File,
-    // ListaAntifurtiResolverService
+    File
   ]
 })
 export class DashboardModule{}

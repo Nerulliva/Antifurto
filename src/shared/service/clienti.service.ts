@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import {Antifurto, Cliente} from "../model/cliente.interface";
 import {FileManagerService} from "./file-manager.service";
 import {Subject} from "rxjs";
@@ -12,20 +12,29 @@ export class ClientiService{
   //@ts-ignore
   actived: number;
 
-  constructor(private fileManager: FileManagerService) {}
+  constructor(private fileManager: FileManagerService) {
+    if(this.clienti.length === 0){
+      this.fileManager.read().then(clienti => {
+        this.clienti = clienti;
+        this.clientiChanged.next(this.clienti.slice());
+      })
+    }
+  }
 
   addCliente(cliente: Cliente): void{
-    /*let cli = this.clienti.find(el => el.nome === cliente.nome && el.nome === cliente.cognome);
-    if(cli && cli.antifurti.length > 0){
-      cli.antifurti.push(...cli.antifurti, ...cliente.antifurti);
-    }
-*/
     this.clienti.push(cliente);
     const textForSave = JSON.stringify(this.clienti);
     this.fileManager.writeFileOnDevice(textForSave, 'clienti');
-    this.clientiChanged.next(this.clienti.slice());
-    console.log(`cliente inserito esterno ${cliente.nome}`)
-    console.log(`cliente dalla lista clienti ${this.clienti[0].nome}`)
+    // console.log(`cliente inserito esterno ${cliente.nome}`)
+    // console.log(`cliente dalla lista clienti ${this.clienti[0].nome}`)
+  }
+
+  modifyCliente(cliente: any, index: number){
+    this.clienti[index] = {...this.clienti[index], ...cliente};
+    const textForSave = JSON.stringify(this.clienti);
+    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
+    this.print();
+
   }
 
   setClienti(clienti: Cliente[]){
@@ -87,8 +96,8 @@ export class ClientiService{
   print() {
     for (const x of this.clienti) {
       console.log(`Clienti-service: nome ${x.nome}`);
-      console.log(`Clienti-service: nome ${x.cognome}`);
-      console.log(`Clienti-service: nome ${x.antifurti}`);
+      console.log(`Clienti-service: conome ${x.cognome}`);
+      // console.log(`Clienti-service: anti ${x.antifurti}`);
     }
   }
 }

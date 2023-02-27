@@ -1,0 +1,23 @@
+ion-grid{
+}
+
+ion-item-sliding{
+  box-shadow: 0px 0px 4px cornflowerblue;
+  border-radius: 2rem;
+  margin-bottom: 1rem;
+}
+
+.container{
+  border-top: 3px solid cornflowerblue;
+  border-radius: 5px;
+  //max-height: 300px;
+}
+
+.item{
+  color: cornflowerblue;
+}
+
+cdk-virtual-scroll-viewport {
+  height: 100%;
+  width: 100%;
+}

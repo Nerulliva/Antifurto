@@ -5,6 +5,7 @@ import {ModalController} from "@ionic/angular";
 import {ClientiService} from "../../shared/service/clienti.service";
 import {Antifurto, Cliente} from "../../shared/model/cliente.interface";
 import {Subscription} from "rxjs";
+import {ComandiModel} from "../../shared/model/comandi.model";
 
 @Component({
   selector: 'dashboard',
@@ -20,6 +21,8 @@ export class DashboardPage implements OnInit, OnDestroy{
   modal: any;
   //@ts-ignore
   subscription: Subscription;
+  comandi: any; // oggetto
+  listaComandi: any // serve solo per lista di lista comandi
 
   constructor(private route: ActivatedRoute,
               private modalCtrl: ModalController,
@@ -31,7 +34,8 @@ export class DashboardPage implements OnInit, OnDestroy{
         param = param.split('-');
         this.idc = param[0];
         this.index=param[1];
-        console.log(`Dashboard: actived ${this.clienteService.actived}`);
+        this.clienteService.setActivedCliente(this.idc);
+        // console.log(`Dashboard: actived ${this.clienteService.actived}`);
 
         this.subscription = this.clienteService.clientiChanged.subscribe(res=>{
           this.antifurto = this.clienteService.getCliente(this.idc).antifurti[this.index];
@@ -40,6 +44,8 @@ export class DashboardPage implements OnInit, OnDestroy{
         })
       }
     );
+    this.comandi = new ComandiModel();
+    this.listaComandi = this.comandi.getComandi();
   }
 
   ngOnDestroy() {

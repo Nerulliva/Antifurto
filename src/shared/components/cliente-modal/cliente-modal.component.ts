@@ -3,7 +3,6 @@ import {ModalController} from "@ionic/angular";
 import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {ClientiService} from "../../service/clienti.service";
 import {Antifurto, Cliente} from "../../model/cliente.interface";
-import {FileManagerService} from "../../service/file-manager.service";
 
 @Component({
   selector: 'cliente-modal',
@@ -18,22 +17,23 @@ export class ClienteModalComponent implements OnInit{
 
   titolo: string = '';
   tipo: string = ""; // addCliente || addAntif
-  index: null = null;
+  // @ts-ignore
+  index: number = 0;
 
   constructor(private modalCtrl: ModalController,
               public formsBuilder: FormBuilder,
-              private clientiService: ClientiService,
-              private fileManagerService: FileManagerService) {
+              private clientiService: ClientiService) {
   }
 
   ngOnInit(): void {
     // console.log(`cliente in modal ${this.clientiService.getCliente(0).nome}`)
     console.log(`tipo: ${this.tipo}`);
-    if(this.tipo === 'addCliente'){
+    if(this.tipo === 'addCliente' || this.tipo === 'modifyCliente'){
       this.initForAddCliente()
     } else if (this.tipo === 'addAntif'){
       this.initForAddAntifurto();
     }
+    console.log(this.index);
   }
 
   initForAddCliente(){
@@ -60,17 +60,27 @@ export class ClienteModalComponent implements OnInit{
         antifurti: [], // riguardare questo
       }
       this.clientiService.addCliente(cliente);
-      this.modalCtrl.dismiss(cliente,'confirm');
+      this.modalCtrl.dismiss('','confirm');
     }
 
     if (this.tipo === 'addAntif') {
       let antifurto: Antifurto = {
         nome: this.formData.get('nome')?.value,
         numCentralina: this.formData.get('centralina')?.value,
-        codiceCliente: this.formData.get('codCentralina')?.value
+        codiceCliente: this.formData.get('codCentralina')?.value,
+        ingressi: []
       }
       this.clientiService.addAntifurto(antifurto);
-      this.modalCtrl.dismiss(antifurto,'confirm');
+      this.modalCtrl.dismiss('','confirm');
+    }
+
+    if(this.tipo === 'modifyCliente'){
+      let cliente = {
+        nome: this.formData.get('nome')?.value,
+        cognome: this.formData.get('cognome')?.value
+      }
+      this.clientiService.modifyCliente(cliente, this.index);
+      this.modalCtrl.dismiss('','confirm');
     }
      // this.confirm();
   }

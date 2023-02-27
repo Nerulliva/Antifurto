@@ -1,0 +1,42 @@
+<ion-grid>
+  <ion-row>
+    <ion-col size-xs="10" offset-xs="1" size-sm="5" offset-sm="1" size-md="8" offset-md="2" size-lg="8" offset-lg="2">
+      <!--<cdk-virtual-scroll-viewport itemSize="44">
+        <ion-list>
+          <ion-item-sliding *cdkVirtualFor="let comando of comandi">
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{comando[1]}}</h3>
+              </ion-label>
+            </ion-item>
+          </ion-item-sliding>
+        </ion-list>
+      </cdk-virtual-scroll-viewport>-->
+
+     <!-- <ion-list>
+      <ion-virtual-scroll [items]="comandi" approxItemHeight="50px">
+        <div *virtualItem="let comando">
+          <ion-item-sliding>
+            <ion-item lines="none" class="ion-text-center">
+              <ion-label>
+                <h3>{{comando[1]}}</h3>
+              </ion-label>
+            </ion-item>
+          </ion-item-sliding>
+        </div>
+      </ion-virtual-scroll>
+      </ion-list>-->
+
+
+      <ion-list mode="md" class="ion-padding container">
+        <ion-item-sliding *ngFor="let comando of comandi">
+          <ion-item lines="none" class="ion-text-center">
+            <ion-label>
+              <h3>{{comando[1]}}</h3>
+            </ion-label>
+          </ion-item>
+        </ion-item-sliding>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-grid>

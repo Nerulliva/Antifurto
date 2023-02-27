@@ -11,7 +11,7 @@
     <ion-col>
       <div class="ion-padding">
         <form  (ngSubmit)="onSubmit()" [formGroup]="formData">
-          <div *ngIf="tipo === 'addCliente'">
+          <div *ngIf="tipo === 'addCliente' || tipo==='modifyCliente'">
             <ion-item lines="full">
               <ion-label position="floating"><strong>Nome:</strong></ion-label>
               <ion-input
