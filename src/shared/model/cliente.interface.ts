@@ -14,4 +14,5 @@ export interface Antifurto{
 export interface Ingresso{
   numero: number;
   nome: string;
+  descrizione: string;
 }

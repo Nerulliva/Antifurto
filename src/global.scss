@@ -28,16 +28,20 @@
 
 body{
   ion-header{
-    ion-title{
-      padding-inline: 0!important;
-      text-align: center;
-      //left: 0.5rem!important;
-      //padding-left: 0.5rem!important;
-    }
+      ion-title{
+        padding-inline: 0!important;
+        text-align: center;
+        //left: 0.5rem!important;
+        //padding-left: 0.5rem!important;
+      }
   }
 }
 
 ion-toast.custom-toast::part(message) {
   font-style: italic;
   text-align: center;
+}
+
+toolbar-container{
+  height: 40px;
 }

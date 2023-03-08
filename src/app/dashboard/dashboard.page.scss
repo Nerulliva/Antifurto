@@ -1,4 +1,4 @@
-#container {
+/*#container {
   text-align: center;
 
   position: absolute;
@@ -22,7 +22,7 @@
 
 #container a {
   text-decoration: none;
-}
+}*/
 
 ion-button[shape=circle]{
   --border-radius: 50%;
@@ -37,3 +37,6 @@ ion-button[shape=circle]{
   font-size: 50px;
 }
 
+.menu{
+  margin: auto;
+}

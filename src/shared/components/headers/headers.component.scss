@@ -6,3 +6,29 @@
     align-items: center;
   }
 }
+
+.toolbar-details{
+  height: 40px;
+  .titolo {
+    height: 40px;
+    text-align: left;
+    margin-left: 10%;
+    }
+
+  .acc-details{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    .myicon{
+      padding: 4px;
+    }
+    p{
+      font-size: 0.7rem;
+    }
+  }
+
+
+}
+
+

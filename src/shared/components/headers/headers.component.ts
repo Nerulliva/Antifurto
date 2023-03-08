@@ -6,6 +6,9 @@ import {Component, Input} from "@angular/core";
     styleUrls: ['./headers.component.scss']
 })
 export class HeadersComponent{
-  @Input() color = 'primary';
-
+  color = 'primary';
+  //@ts-ignore
+  @Input() nomeAccount;
+  //@ts-ignore
+  // @Input() nomeAntifurto;
 }

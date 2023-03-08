@@ -1,6 +1,7 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {DashboardPage} from "./dashboard.page";
+import {ListaIngressiComponent} from "./lista-ingressi/lista-ingressi.component";
 
 const routes: Routes = [
   {
@@ -10,6 +11,10 @@ const routes: Routes = [
   {
     path: 'dashboard/:index',
     redirectTo: '',
+  },
+  {
+    path: 'lista-ingressi/:id',
+    component: ListaIngressiComponent
   }
 ]
 

@@ -16,9 +16,15 @@ export class ClienteModalComponent implements OnInit{
   @ViewChild('form') form: NgForm
 
   titolo: string = '';
-  tipo: string = ""; // addCliente || addAntif
+  tipo: string = ""; // addCliente || addAntif || modifyAnt || modifyCliente || addIngresso || modifyIng
   // @ts-ignore
   index: number = 0;
+  // @ts-ignore
+  count: number;
+  // @ts-ignore
+  indexIng: number;
+  // @ts-ignore
+  data: any;
 
   constructor(private modalCtrl: ModalController,
               public formsBuilder: FormBuilder,
@@ -30,26 +36,61 @@ export class ClienteModalComponent implements OnInit{
     console.log(`tipo: ${this.tipo}`);
     if(this.tipo === 'addCliente' || this.tipo === 'modifyCliente'){
       this.initForAddCliente()
-    } else if (this.tipo === 'addAntif'){
+    } else if (this.tipo === 'addAntif' || this.tipo === 'modifyAnt'){
       this.initForAddAntifurto();
+    } else if (this.tipo === 'addIngresso' || this.tipo === 'modifyIng'){
+      this.initForAddIngresso();
     }
     console.log(this.index);
   }
 
   initForAddCliente(){
-    this.formData = new FormGroup({
-      'nome': new FormControl(null, Validators.required),
-      'cognome': new FormControl(null),
-    });
+    if(this.tipo === 'addCliente'){
+      this.formData = new FormGroup({
+        'nome': new FormControl(null, Validators.required),
+        'cognome': new FormControl(null, Validators.required),
+      });
+    } else {
+      this.formData = new FormGroup({
+        'nome': new FormControl(this.data.nome, Validators.required),
+        'cognome': new FormControl(this.data.cognome, Validators.required),
+      });
+    }
+
   }
 
   initForAddAntifurto(){
-    this.formData = new FormGroup({
-      'nome': new FormControl(null, Validators.required),
-      'centralina': new FormControl(null, [Validators.required, Validators.pattern('^[0-9]{10}$')]),
-      'codCentralina': new FormControl(null, [Validators.required, Validators.pattern('^[0-9]{6}$')])
-    });
+    if(this.tipo === 'addAntif'){
+      this.formData = new FormGroup({
+        'nome': new FormControl(null, Validators.required),
+        'centralina': new FormControl(null, [Validators.required, Validators.pattern('^[0-9]{10}$')]),
+        'codCentralina': new FormControl(null, [Validators.required, Validators.pattern('^[0-9]{6}$')])
+      });
+    } else {
+      this.formData = new FormGroup({
+        'nome': new FormControl(this.data.nome, Validators.required),
+        'centralina': new FormControl(this.data.numCentralina, [Validators.required, Validators.pattern('^[0-9]{10}$')]),
+        'codCentralina': new FormControl(this.data.codiceCliente, [Validators.required, Validators.pattern('^[0-9]{6}$')])
+      });
+    }
+
   }
+
+  initForAddIngresso(){
+    if(this.tipo === 'addAntif'){
+      this.formData = new FormGroup({
+        'numero': new FormControl(null, [Validators.required, Validators.min(1)]),
+        'nome' : new FormControl(null, Validators.required)
+      });
+    } else {
+      this.formData = new FormGroup({
+        'numero': new FormControl(this.data.numero, [Validators.required, Validators.min(1)]),
+        'nome' : new FormControl(this.data.nome, Validators.required)
+      });
+    }
+
+  }
+
   // @ts-ignore
    onSubmit() {
 
@@ -60,31 +101,66 @@ export class ClienteModalComponent implements OnInit{
         antifurti: [], // riguardare questo
       }
       this.clientiService.addCliente(cliente);
-      this.modalCtrl.dismiss('','confirm');
+      this.modalCtrl.dismiss(cliente,'confirm');
     }
-
-    if (this.tipo === 'addAntif') {
+    else if (this.tipo === 'addAntif') {
       let antifurto: Antifurto = {
         nome: this.formData.get('nome')?.value,
         numCentralina: this.formData.get('centralina')?.value,
         codiceCliente: this.formData.get('codCentralina')?.value,
-        ingressi: []
+        ingressi: [] = []
       }
       this.clientiService.addAntifurto(antifurto);
-      this.modalCtrl.dismiss('','confirm');
+      this.modalCtrl.dismiss(antifurto,'confirm');
     }
-
-    if(this.tipo === 'modifyCliente'){
+     else if(this.tipo === 'modifyCliente'){
       let cliente = {
         nome: this.formData.get('nome')?.value,
         cognome: this.formData.get('cognome')?.value
       }
       this.clientiService.modifyCliente(cliente, this.index);
-      this.modalCtrl.dismiss('','confirm');
+      this.modalCtrl.dismiss(cliente,'confirm');
+    }
+    else if(this.tipo === 'modifyAnt'){
+      let antifurto = {
+        nome: this.formData.get('nome')?.value,
+        numCentralina: this.formData.get('centralina')?.value,
+        codiceCliente: this.formData.get('codCentralina')?.value,
+      }
+      this.clientiService.modifyAntifurto(antifurto, this.index);
+      this.modalCtrl.dismiss(antifurto,'confirm');
+    }
+    else if(this.tipo === 'addIngresso'){
+      let num = this.formData.get('numero')?.value
+      let desc = num < 10 ? '0'+num+'_'+this.formData.get('nome')?.value : num+'_'+this.formData.get('nome')?.value;
+      let ingresso = {
+        nome: this.formData.get('nome')?.value,
+        numero: this.formData.get('numero')?.value,
+        descrizione: desc
+      }
+      this.clientiService.addIngresso(ingresso, this.index);
+      this.modalCtrl.dismiss(ingresso,'confirm');
+    }
+    else if(this.tipo === 'modifyIng'){
+      let num = this.formData.get('numero')?.value
+      let desc = num < 10 ? '0'+num+'_'+this.formData.get('nome')?.value : num+'_'+this.formData.get('nome')?.value;
+      let ingresso = {
+        nome: this.formData.get('nome')?.value,
+        numero: this.formData.get('numero')?.value,
+        descrizione: desc
+      }
+      this.clientiService.modifyIngresso(ingresso, this.index, this.indexIng);
+      this.modalCtrl.dismiss(ingresso,'confirm');
     }
      // this.confirm();
   }
 
+  validIngresso(): boolean{
+    if( this.tipo === 'modifyAnt'){
+      return !this.clientiService.ingressoExists(this.index, this.formData.get('numero')?.value);
+    }
+    return false;
+  }
 
   validNumero(): boolean{
     let res = !this.formData.get('centralina')?.valid && this.formData.touched;

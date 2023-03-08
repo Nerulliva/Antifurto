@@ -23,6 +23,8 @@ export class DashboardPage implements OnInit, OnDestroy{
   subscription: Subscription;
   comandi: any; // oggetto
   listaComandi: any // serve solo per lista di lista comandi
+  nomeCliente: any;
+  nomeAntifurto: any;
 
   constructor(private route: ActivatedRoute,
               private modalCtrl: ModalController,
@@ -37,10 +39,21 @@ export class DashboardPage implements OnInit, OnDestroy{
         this.clienteService.setActivedCliente(this.idc);
         // console.log(`Dashboard: actived ${this.clienteService.actived}`);
 
+        if(this.clienteService.getCliente(this.idc)){
+          this.antifurto = this.clienteService.getCliente(this.idc).antifurti[this.index];
+          this.nomeCliente = this.clienteService.getNominativo();
+          this.nomeAntifurto = this.antifurto?.nome;
+          console.log('esiste');
+          console.log(`DASHBOARD: nome antif ${this.antifurto.nome}`);
+        }
+
+      // catturato quando nasce nuova istanza di clientiService
         this.subscription = this.clienteService.clientiChanged.subscribe(res=>{
           this.antifurto = this.clienteService.getCliente(this.idc).antifurti[this.index];
-          console.log(`Dashboard: clienti in subscribe ${JSON.stringify(res)}`);
-          console.log(`Dashboard: antifurto in subscribe ${JSON.stringify(this.antifurto)}`);
+          this.nomeCliente = this.clienteService.getNominativo();
+          this.nomeAntifurto = this.antifurto?.nome;
+          // console.log(`Dashboard: clienti in subscribe ${JSON.stringify(res)}`);
+          // console.log(`Dashboard: antifurto in subscribe ${JSON.stringify(this.antifurto)}`);
         })
       }
     );

@@ -42,11 +42,12 @@ export class ListaClientiComponents implements OnInit,OnDestroy{
     this.router.navigate([`${index}/antifurti`], {relativeTo: this.route})
   }
 
-  async manageCliente(tipo?: string, index?: number){
+  async manageCliente(tipo?: string, index?: number, cliente?: Cliente){
 
     let modalita = tipo && tipo==='addCliente' ? 'addCliente' : 'modifyCliente';
     let title  = tipo && tipo==='addCliente' ? 'Aggiungi Account' : 'Modifica Account';
     let i = index ? index : null;
+    let clienteData = modalita === 'modifyCliente' ? cliente : null;
     // console.log(`index manCli ${i}`)
     // console.log(`index arg manCli ${index}`)
 
@@ -57,15 +58,17 @@ export class ListaClientiComponents implements OnInit,OnDestroy{
       componentProps:{
         "titolo": title,
         "tipo": modalita,
-        "index": i
+        "index": i,
+        "data": clienteData
       }
     });
     this.modal.present();
 
-    const {role} = await this.modal.onWillDismiss();
+    const {data,role} = await this.modal.onWillDismiss();
     if(role === 'confirm'){
-      console.log('conferma');
       this.clienti = this.clientiService.getClienti();
+       modalita === 'addCliente' ? await this.presentToast(`Account ${data.nome} ${data.cognome} creato con successo`, 'bottom') :
+        await this.presentToast(`Account ${cliente?.nome} ${cliente?.cognome} modificato con successo`, 'bottom');
     }
   }
 

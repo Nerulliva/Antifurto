@@ -1,16 +1,21 @@
-<headers>
+<headers [nomeAccount]="nomeCliente">
 
-  <div class="ion-padding">
+  <div >
     <div class="ion-text-center">
-      <h2>Il tuo antifurto</h2>
+      <h2>Il tuo antifurto {{nomeAntifurto}}</h2>
     </div>
   </div>
 
-  <div class=" ion-padding">
+  <div class="menu">
+    <menu
+      [antifurto]="antifurto"
+      [indexAntifurto]="index"></menu>
+  </div>
+  <!--<div class=" ion-padding">
     <lista-comandi
     [comandi]="listaComandi">
     </lista-comandi>
-  </div>
+  </div>-->
 
 </headers>
 

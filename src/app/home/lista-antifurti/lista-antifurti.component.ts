@@ -20,8 +20,10 @@ export class ListaAntifurtiComponent implements OnInit {
   oldAntifurti: Antifurto[] =[];
   //@ts-ignore
   index: number; // index cliente attivo
-  modalDemo: any;
+  modalDemoSwipe: any;
+  modalDemoSwipe2: any;
   intervalId: any;
+  nomeCliente = '';
 
   constructor(public modalCtrl: ModalController,
               private clientiService: ClientiService,
@@ -32,28 +34,36 @@ export class ListaAntifurtiComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params: Params)=>{
       this.index = params['id'];
-      console.log(`index ${this.index}`)
+      // console.log(`index ${this.index}`)
       this.antifurtiCliente = this.clientiService.getCliente(this.index).antifurti;
+      this.nomeCliente = this.clientiService.getNominativo();
     })
   }
 
-  async manageAntifurto() {
+  async manageAntifurto( tipo?:string, index?: number, antifurto?: Antifurto) {
+
+    let modalita = tipo ==='addAntif' ? 'addAntif' : 'modifyAnt'
+    let titolo = tipo === 'addAntif' ? 'Aggiungi Antifurto' : 'Modifica Antifurto';
+    let antifData = modalita === 'modifyAnt' ? antifurto : null;
+
     this.modal = await this.modalCtrl.create({
       component: ClienteModalComponent,
       backdropDismiss: false,
       swipeToClose: false,
       componentProps: {
-        "titolo": "Aggiungi Account",
-        "tipo": "addAntif"
+        "titolo": titolo,
+        "tipo": modalita,
+        "index": index,
+        "data": antifData
       }
     });
     this.modal.present();
 
-    const {role} = await this.modal.onWillDismiss();
+    const {data,role} = await this.modal.onWillDismiss();
     if (role === 'confirm') {
-      let obj = JSON.stringify(this.clientiService.getCliente(0));
-      console.log(`Lista-antifurti: obj in dismiss ${obj}`)
-      console.log(`Lista-antifurti: index ${this.index}`)
+      this.antifurtiCliente = this.clientiService.getAntifurticliente();
+       modalita === 'addAntif' ?  await this.presentToast(`Antifurto ${data.nome} creato con successo`, 'bottom'):
+        await this.presentToast(`Antifurto ${antifurto?.nome} modificato con successo`, 'bottom');
     }
   }
 
@@ -62,21 +72,37 @@ export class ListaAntifurtiComponent implements OnInit {
   }
 
   onOverlay() {
-    this.modalDemo = true;
+    this.modalDemoSwipe = true;
     const self = this;
     this.intervalId =  setInterval(function() {
       self.swipeItem();
     }, 1000);
   }
 
+  onOverlay2() {
+    this.modalDemoSwipe = true;
+    this.modalDemoSwipe2 = true;
+    const self = this;
+    this.intervalId = setInterval(function() {
+      self.swipeItem2();
+    }, 1000);
+  }
+
   offOverlay() {
     clearInterval(this.intervalId);
-    this.modalDemo = false;
+    this.modalDemoSwipe = false;
+    this.modalDemoSwipe2 = false;
   }
 
   swipeItem(){
     const cliente = document.getElementById("overlayItem") as HTMLIonItemSlidingElement;
     cliente.open('start');
+    cliente.close();
+  }
+
+  swipeItem2(){
+    const cliente = document.getElementById("overlayItem") as HTMLIonItemSlidingElement;
+    cliente.open('end');
     cliente.close();
   }
 
@@ -99,7 +125,7 @@ export class ListaAntifurtiComponent implements OnInit {
       backdropDismiss: false,
       swipeToClose: false,
       componentProps:{
-        'titolo': 'Elimina Account',
+        'titolo': 'Elimina Antifurto',
         'info': info
       }
     })

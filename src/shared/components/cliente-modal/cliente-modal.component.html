@@ -11,6 +11,7 @@
     <ion-col>
       <div class="ion-padding">
         <form  (ngSubmit)="onSubmit()" [formGroup]="formData">
+          <!--AGGIUNGI / MODIFICA CLIENTE-->
           <div *ngIf="tipo === 'addCliente' || tipo==='modifyCliente'">
             <ion-item lines="full">
               <ion-label position="floating"><strong>Nome:</strong></ion-label>
@@ -31,7 +32,8 @@
               </ion-input>
             </ion-item>
           </div>
-          <div *ngIf="tipo === 'addAntif'">
+          <!--AGGIUNGI / MODIFICA ANTIFURTO-->
+          <div *ngIf="tipo === 'addAntif' || tipo === 'modifyAnt'">
             <ion-item lines="full">
               <ion-label position="floating"><strong>Nome:</strong></ion-label>
               <ion-input
@@ -51,7 +53,6 @@
               </ion-input>
             </ion-item>
             <span *ngIf="validNumero()" class=" ion-padding">Numero non valido, deve avere 10 cifre</span>
-
             <ion-item lines="full">
               <ion-label position="floating"><strong>Codice:</strong></ion-label>
               <ion-input
@@ -63,9 +64,31 @@
             </ion-item>
             <span *ngIf="validCodCentralina()" class="ion-padding">Numero non valido, deve avere 6 cifre</span>
           </div>
+          <!--AGGIUNGI / MODIFICA INGRESSO-->
+          <div *ngIf="tipo === 'addIngresso' || tipo ==='modifyIng'">
+            <ion-item lines="full">
+              <ion-label position="floating"><strong>Numero:</strong></ion-label>
+              <ion-input
+                type="number"
+                required
+                class="form-control"
+                formControlName="numero">
+              </ion-input>
+            </ion-item>
+            <span *ngIf="validIngresso()" class=" ion-padding">Numero ingresso gia esistente</span>
+            <ion-item lines="full">
+              <ion-label position="floating"><strong>Nome:</strong></ion-label>
+              <ion-input
+                type="text"
+                required
+                class="form-control"
+                formControlName="nome">
+              </ion-input>
+            </ion-item>
+          </div>
           <ion-row>
             <ion-col>
-              <ion-button [disabled]="!formData.valid" type="submit" expand="block" shape="round">Conferma</ion-button>
+              <ion-button [disabled]="!formData.valid || validIngresso()" type="submit" expand="block" shape="round">Conferma</ion-button>
             </ion-col>
           </ion-row>
         </form>

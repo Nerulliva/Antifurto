@@ -34,7 +34,48 @@ export class ClientiService{
     const textForSave = JSON.stringify(this.clienti);
     this.fileManager.writeFileOnDevice(textForSave, 'clienti');
     this.print();
+  }
 
+  deleteCliente(index: number){
+    this.clienti.splice(index,1);
+    const textForSave = JSON.stringify(this.clienti);
+    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
+  }
+
+  addAntifurto(antifurto: Antifurto){
+    this.clienti[this.actived].antifurti?.push(antifurto);
+    const textForSave = JSON.stringify(this.clienti);
+    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
+  }
+
+  deleteAntifurto(index: number){
+    this.clienti[this.actived].antifurti.splice(index, 1);
+    const textForSave = JSON.stringify(this.clienti);
+    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
+  }
+
+  modifyAntifurto(antifurto: any, index:number){
+    this.clienti[this.actived].antifurti[index] = {...this.clienti[this.actived].antifurti[index], ...antifurto};
+    const textForSave = JSON.stringify(this.clienti);
+    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
+  }
+
+  addIngresso(ingresso: any,index: number){
+    this.clienti[this.actived].antifurti[index].ingressi.push(ingresso);
+    const textForSave = JSON.stringify(this.clienti);
+    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
+  }
+
+  modifyIngresso(ingresso:any, indexAnt: number, indexIng: number){
+    this.clienti[this.actived].antifurti[indexAnt].ingressi[indexIng] = {
+      ...this.clienti[this.actived].antifurti[indexAnt].ingressi[indexIng], ...ingresso
+    };
+  }
+
+  eliminaIngresso(indexAnt: number, indexIng: number){
+    this.clienti[this.actived].antifurti[indexAnt].ingressi.splice(indexIng,1);
+    const textForSave = JSON.stringify(this.clienti);
+    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
   }
 
   setClienti(clienti: Cliente[]){
@@ -66,31 +107,17 @@ export class ClientiService{
     return this.clienti[this.getActived()].antifurti.slice();
   }
 
+  getIngresso(indexAnt: number, indexIng: number){
+    return this.getAntifurticliente()[indexAnt].ingressi[indexIng];
+  }
+
   getNominativo(): string{
-    return this.getActivedCliente().nome + '_' + this.getActivedCliente().cognome
+    return this.getActivedCliente().nome + ' ' + this.getActivedCliente().cognome
   }
 
-  deleteCliente(index: number){
-    this.clienti.splice(index,1);
-    const textForSave = JSON.stringify(this.clienti);
-    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
-  }
-
-  addAntifurto(antifurto: Antifurto){
-    let obj = JSON.stringify(this.clienti);
-    console.log(`ClientiService: lista clienti in add ${obj}`)
-    console.log(`ClientiService: numero index ${this.actived}`)
-    this.clienti[this.actived].antifurti?.push(antifurto);
-    let obj2 = JSON.stringify(this.clienti);
-    console.log(`ClientiService: lista clienti in add dopo ${obj2}`)
-    const textForSave = JSON.stringify(this.clienti);
-    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
-  }
-
-  deleteAntifurto(index: number){
-    this.clienti[this.actived].antifurti.splice(index, 1);
-    const textForSave = JSON.stringify(this.clienti);
-    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
+  ingressoExists(index: number, numIng: number): boolean {
+    let ing = this.clienti[this.actived].antifurti[index].ingressi.find(el => el.numero === numIng);
+    return ing ? true : false;
   }
 
   print() {

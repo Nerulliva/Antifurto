@@ -8,6 +8,8 @@ import {ScrollingModule} from "@angular/cdk/scrolling";
 import {DashboardPage} from "./dashboard.page";
 import {File} from "@awesome-cordova-plugins/file/ngx";
 import { ListaComandiComponent } from "./lista-comandi/lista-comandi.component";
+import { MenuComponent} from "./menu/menu.component";
+import { ListaIngressiComponent} from "./lista-ingressi/lista-ingressi.component";
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import { ListaComandiComponent } from "./lista-comandi/lista-comandi.component";
   ],
   declarations: [
     DashboardPage,
-    ListaComandiComponent
+    ListaComandiComponent,
+    MenuComponent,
+    ListaIngressiComponent
   ],
   providers: [
     File
