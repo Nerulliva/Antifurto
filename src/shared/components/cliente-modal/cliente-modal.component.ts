@@ -73,11 +73,10 @@ export class ClienteModalComponent implements OnInit{
         'codCentralina': new FormControl(this.data.codiceCliente, [Validators.required, Validators.pattern('^[0-9]{6}$')])
       });
     }
-
   }
 
   initForAddIngresso(){
-    if(this.tipo === 'addAntif'){
+    if(this.tipo === 'addIngresso'){
       this.formData = new FormGroup({
         'numero': new FormControl(null, [Validators.required, Validators.min(1)]),
         'nome' : new FormControl(null, Validators.required)

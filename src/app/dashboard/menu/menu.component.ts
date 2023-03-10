@@ -12,15 +12,22 @@ export class MenuComponent implements OnInit{
   @Input() antifurto: Antifurto;
   //@ts-ignore
   @Input() indexAntifurto: number;
+  //@ts-ignore
+  sceltaCliente: SelezioneCliente;
 
   constructor(private router: Router,
               private route: ActivatedRoute){}
 
   ngOnInit(): void {
+
   }
 
-  goTo(){
+  goToIngressi(){
     this.router.navigate([`lista-ingressi/${this.indexAntifurto}`], {relativeTo: this.route});
+  }
+
+  goToComandi(){
+    this.router.navigate([`lista-comandi/${this.indexAntifurto}`], {relativeTo: this.route});
   }
 
 }

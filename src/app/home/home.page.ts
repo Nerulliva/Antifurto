@@ -27,6 +27,7 @@ export class HomePage implements OnInit{
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.fileManager.printAppFiles();
     this.fileManager.writeDir();
     this.fileManager.read().then(res=>{
       this.clientiService.setClienti(res);

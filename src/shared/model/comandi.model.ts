@@ -37,8 +37,8 @@ export class ComandiModel{
     return this.comandi.slice();
   }
 
-  getComando(i: number , j: number){
-    const value = this.comandi[i][j];
+  getComando(i: number){
+    const value = this.comandi[i][0];
     return value;
   }
 }

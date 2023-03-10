@@ -10,6 +10,7 @@ import {File} from "@awesome-cordova-plugins/file/ngx";
 import { ListaComandiComponent } from "./lista-comandi/lista-comandi.component";
 import { MenuComponent} from "./menu/menu.component";
 import { ListaIngressiComponent} from "./lista-ingressi/lista-ingressi.component";
+import { SenderComponent} from "./sender/sender.component";
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { ListaIngressiComponent} from "./lista-ingressi/lista-ingressi.component
     DashboardPage,
     ListaComandiComponent,
     MenuComponent,
-    ListaIngressiComponent
+    ListaIngressiComponent,
+    SenderComponent
   ],
   providers: [
     File

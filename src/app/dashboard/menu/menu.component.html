@@ -2,7 +2,7 @@
   <ion-row>
     <ion-col size-xs="10" offset-xs="0" size-sm="5" offset-sm="1" size-md="8" offset-md="2" size-lg="8" offset-lg="2">
       <div class="cards">
-        <ion-card id="ingressi" class="ion-text-center" button="true" (click)="goTo()">
+        <ion-card id="ingressi" class="ion-text-center" button="true" (click)="goToIngressi()">
           <ion-card-header color="primary">
             <ion-card-title>Ingressi</ion-card-title>
           </ion-card-header>
@@ -10,7 +10,7 @@
             In questa sezione puoi interagire con gli ingressi del tuo antifurto
           </ion-card-content>
         </ion-card>
-        <ion-card id="comandi" class="ion-text-center" button="true">
+        <ion-card id="comandi" class="ion-text-center" button="true" (click)="goToComandi()">
           <ion-card-header color="primary">
             <ion-card-title>Comandi</ion-card-title>
           </ion-card-header>
