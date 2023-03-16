@@ -144,7 +144,7 @@ export class ListaClientiComponents implements OnInit,OnDestroy{
   }
 
   ngOnDestroy(): void {
-    this.subscritpion.unsubscribe();
+    // this.subscritpion.unsubscribe();
   }
 
 }

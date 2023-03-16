@@ -155,7 +155,7 @@ export class ClienteModalComponent implements OnInit{
   }
 
   validIngresso(): boolean{
-    if( this.tipo === 'modifyAnt'){
+    if( this.tipo === 'modifyIng'){
       return !this.clientiService.ingressoExists(this.index, this.formData.get('numero')?.value);
     }
     return false;

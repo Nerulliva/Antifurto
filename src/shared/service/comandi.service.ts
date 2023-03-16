@@ -50,4 +50,24 @@ export class ComandiService{
   getComando(index: number){
     return this.comandi.getComando(index);
   }
+
+  composeMessage(): string {
+    let baseString = `C.${this.codCliente} #`;
+    console.log(`COM SERVICE: ${this.comandoScelto}`)
+    console.log(`COM SERVICE: ${this.ingressoScelto}`)
+    if(this.comandoScelto !== undefined && this.ingressoScelto !== undefined){
+      console.log('tutti e due')
+      let numIng = this.descIngresso.substring(0,2);
+      let comando = this.getComando(this.comandoScelto);
+      comando = comando.replace('#', numIng);
+      baseString = baseString.replace('#',comando);
+      console.log(baseString)
+      // return baseString;
+    } else if(this.comandoScelto && !this.ingressoScelto){
+      let comando = this.getComando(this.comandoScelto);
+      baseString = baseString.replace('#', comando);
+      console.log(baseString)
+    }
+    return baseString;
+  }
 }

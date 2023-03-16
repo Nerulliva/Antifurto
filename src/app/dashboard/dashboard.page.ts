@@ -8,13 +8,6 @@ import {Subscription} from "rxjs";
 import {ComandiModel} from "../../shared/model/comandi.model";
 import {ComandiService} from "../../shared/service/comandi.service";
 
-export interface SelezioneCliente{
-  comando: number;
-  ingresso: number;
-  descIngresso: string;
-  codiceCliente: number;
-}
-
 @Component({
   selector: 'dashboard',
   templateUrl: './dashboard.page.html',
@@ -42,6 +35,7 @@ export class DashboardPage implements OnInit, OnDestroy{
               private comandiService: ComandiService) {}
 
   ngOnInit(): void {
+    console.log('init dashboard')
     this.route.params.subscribe((params: Params) =>{
         let param = params['index'];
         param = param.split('-');
@@ -67,31 +61,12 @@ export class DashboardPage implements OnInit, OnDestroy{
           // console.log(`Dashboard: antifurto in subscribe ${JSON.stringify(this.antifurto)}`);
         });
         // scelte comandi con eventuali ingressi fatte dal cliente
-        this.sceltaCliente = {
-            comando: this.comandiService.getComandoScelto(),
-            ingresso: this.comandiService.getIngressoScelto(),
-            descIngresso: this.comandiService.getDescIngresso(),
-            codiceCliente: this.comandiService.getCodiceCliente()
-        }
-         this.messageToSend = this.composeMessage();
-          console.log(this.messageToSend)
 
+         // this.messageToSend = this.composeMessage();
+       this.messageToSend = this.comandiService.composeMessage();
+        console.log(`Dashboard: ${this.messageToSend}`)
       }
     );
-  }
-
-  composeMessage(): string{
-    let baseString = `C.${this.sceltaCliente.codiceCliente} #`;
-    if (this.sceltaCliente.comando && this.sceltaCliente.ingresso){
-      let numIng = this.sceltaCliente.descIngresso.substring(0,1);
-      let comando = this.comandiService.getComando(this.sceltaCliente.comando);
-      comando = comando.replace('#', numIng);
-      baseString = baseString.replace('#',comando);
-    } else if (this.sceltaCliente.comando){
-      let comando = this.comandiService.getComando(this.sceltaCliente.comando);
-      baseString = baseString.replace('#',comando);
-    }
-    return baseString;
   }
 
   ngOnDestroy() {
