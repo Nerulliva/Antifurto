@@ -29,17 +29,21 @@ export class ListaComandiComponent implements OnInit{
     this.route.params.subscribe((params)=>{
       this.indexAntifurto = params['index'];
       this.ingressi = this.clientiService.getActivedCliente().antifurti[this.indexAntifurto].ingressi;
+      this.ingressi.sort((a:any, b:any) => a.numero > b.numero ? 1 : -1);
       this.comandiService.setCodCliente(this.clientiService.getActivedCliente().antifurti[this.indexAntifurto].codiceCliente);
     });
 
     this.comandi = this.comandiService.getComandi();
+    this.comandi.sort((a:any, b:any) => a[1] > b[1] ? 1 : -1);
     this.nomeCliente = this.clientiService.getNominativo();
   }
 
   //  setto il comando scelto
   select(index: number){
    this.comandiService.setComandoScelto(index);
-   if(index === 23 || index === 24){
+   let comando = this.comandiService.getComando(index);
+
+   if(comando === 'Inclusione ingresso' || comando === 'Esclusione Ingresso'){
      this.openModal = true;
    } else {
      this.navCtrl.pop();

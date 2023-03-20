@@ -35,7 +35,7 @@ export class ListaIngressiComponent implements OnInit{
       console.log(`index antif ${this.indexAntifurto}`)
       console.log(`LISTA INGRESSI Cliente: ${JSON.stringify(this.clientiService.getActivedCliente())}`);
       this.listaIngressi = this.clientiService.getActivedCliente().antifurti[this.indexAntifurto]?.ingressi;
-
+      this.listaIngressi.sort((a:any, b:any) => a.numero > b.numero ? 1 : -1);
     })
   }
 

@@ -6,7 +6,7 @@
         <div class="message">
           <p *ngIf="messageReady">{{messageToSend}}</p>
         </div>
-        <ion-button (click)="sendMessage()">
+        <ion-button (click)="sendMessage()" [disabled]="!messageReady">
           Invia
           <ion-icon slot="end" class="icon-only myicon" name="send-outline"></ion-icon>
         </ion-button>

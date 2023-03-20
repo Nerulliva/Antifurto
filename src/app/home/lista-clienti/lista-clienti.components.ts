@@ -34,6 +34,7 @@ export class ListaClientiComponents implements OnInit,OnDestroy{
 
   ngOnInit() {
     this.clienti = this.clientiService.getClienti();
+    this.clienti.sort((a:any, b:any) => a.nome > b.nome ? 1 : -1);
      // this.isEmpty = this.clienti?.length === 0 ? true : false
   }
 
@@ -108,6 +109,7 @@ export class ListaClientiComponents implements OnInit,OnDestroy{
     cliente.close();
   }
 
+  // cssClass non definita
   async presentToast(message: string,position: 'top' | 'middle' | 'bottom'){
     const toast = await this.toast.create({
       duration: 2000,

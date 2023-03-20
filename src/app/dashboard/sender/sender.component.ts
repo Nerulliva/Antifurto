@@ -1,7 +1,7 @@
-import {Component, DoCheck, Input, OnInit} from "@angular/core";
+import {Component, DoCheck, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Antifurto} from "@plug/antifurto-plugin";
 import {ClientiService} from "../../../shared/service/clienti.service";
-import {SmsManager} from "@byteowls/capacitor-sms";
+import {ToastController} from "@ionic/angular";
 
 @Component({
   selector: 'sender',
@@ -15,7 +15,10 @@ export class SenderComponent implements OnInit, DoCheck{
   oldMessage: any;
   messageReady: any;
 
-  constructor(private clientiService: ClientiService) {
+  @Output() messageSendEmitter = new EventEmitter<boolean>();
+
+  constructor(private clientiService: ClientiService,
+              private toast: ToastController) {
   }
 
   ngOnInit(): void {
@@ -37,8 +40,20 @@ export class SenderComponent implements OnInit, DoCheck{
     Antifurto.sendMessage({
       numero: this.clientiService.getActivedCliente().antifurti[this.index].numCentralina.toString(),
       message: this.messageToSend
-    })
+    }).then(async () => {
+      await this.presentToast('Messaggio inviato', 'bottom');
+       this.messageSendEmitter.emit(true);
+    });
+  }
 
+  async presentToast(message: string,position: 'top' | 'middle' | 'bottom'){
+    const toast = await this.toast.create({
+      duration: 2000,
+      position: position,
+      message: message,
+      cssClass: 'custom-toast'
+    })
+    await toast.present();
   }
 
 }

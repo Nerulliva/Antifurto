@@ -69,6 +69,12 @@ export class DashboardPage implements OnInit, OnDestroy{
     );
   }
 
+  clearMessage(event: any){
+    if( event) {
+      this.messageToSend = '';
+    }
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
