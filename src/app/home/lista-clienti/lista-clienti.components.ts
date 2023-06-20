@@ -68,8 +68,9 @@ export class ListaClientiComponents implements OnInit,OnDestroy{
     const {data,role} = await this.modal.onWillDismiss();
     if(role === 'confirm'){
       this.clienti = this.clientiService.getClienti();
-       modalita === 'addCliente' ? await this.presentToast(`Account ${data.nome} ${data.cognome} creato con successo`, 'bottom') :
+      modalita === 'addCliente' ? await this.presentToast(`Account ${data.nome} ${data.cognome} creato con successo`, 'bottom') :
         await this.presentToast(`Account ${cliente?.nome} ${cliente?.cognome} modificato con successo`, 'bottom');
+      this.clienti.sort((a:any, b:any) => a.nome > b.nome ? 1 : -1);
     }
   }
 
@@ -122,7 +123,7 @@ export class ListaClientiComponents implements OnInit,OnDestroy{
 
   async elimina(index: number){
     let nominativo = this.clienti[index].nome + ' ' + this.clienti[index].cognome
-    let info =`Attenzione, si sta per eliminare l'account ${nominativo}. Sei sicuro?`
+    let info =`Attenzione, si sta per eliminare l'account <b>${nominativo}</b>. Sei sicuro?`
 
     this.modal = await this.modalCtrl.create({
       component: ConfirmModalComponent,

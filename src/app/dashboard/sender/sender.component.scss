@@ -1,11 +1,15 @@
 .container{
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto 12px auto auto;
 }
 
 .message{
   border: 2px solid cornflowerblue;
   width: 200px;
+  height: 80px;
   text-align: center;
 }
 

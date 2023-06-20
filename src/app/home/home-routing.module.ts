@@ -15,7 +15,7 @@ const routes: Routes = [
     ]*/
   },
   {path: 'clienti', component: ListaClientiComponents},
-  {path: 'clienti/:id/antifurti', component: ListaAntifurtiComponent}
+  {path: 'clienti/:id/antifurti', component: ListaAntifurtiComponent},
 ];
 
 @NgModule({

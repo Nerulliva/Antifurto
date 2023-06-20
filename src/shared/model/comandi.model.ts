@@ -41,4 +41,8 @@ export class ComandiModel{
     const value = this.comandi[i][0];
     return value;
   }
+
+  getComandoDesc(i: number){
+    return this.comandi[i][1];
+  }
 }

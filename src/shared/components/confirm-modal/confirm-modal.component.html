@@ -7,7 +7,7 @@
 <ion-grid>
   <ion-row>
     <ion-col>
-      <p class="info">{{info}}</p>
+      <p class="info" [innerHtml]="info"></p>
       <ion-buttons class="buttons">
         <ion-button (click)="annulla()">Annulla</ion-button>
         <ion-button (click)="conferma()">Conferma</ion-button>

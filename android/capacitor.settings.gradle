@@ -24,7 +24,7 @@ include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
 
 include ':plug-antifurto-plugin'
-project(':plug-antifurto-plugin').projectDir = new File('../node_modules/@plug/antifurto-plugin/android')
+project(':plug-antifurto-plugin').projectDir = new File('../../PLUGIN/antifurto-plugin/android')
 
 include ':capacitor-blob-writer'
 project(':capacitor-blob-writer').projectDir = new File('../node_modules/capacitor-blob-writer/android')

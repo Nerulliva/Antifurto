@@ -3,6 +3,7 @@ import {ThemeService} from "../../theme/theme.service";
 import {ClientiService} from "../../shared/service/clienti.service";
 import {FileManagerService} from "../../shared/service/file-manager.service";
 import {ActivatedRoute, Router} from "@angular/router";
+
 // import { PrivacyScreen } from '@capacitor-community/privacy-screen';
 import { Antifurto} from '@plug/antifurto-plugin';
 
@@ -19,7 +20,8 @@ export class HomePage implements OnInit{
               private clientiService: ClientiService,
               private fileManager: FileManagerService,
               private router: Router,
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute,
+              private screenOrientation: ScreenOrientation) {}
 
   ngOnInit(): void {
     this.fileManager.printAppFiles();
@@ -35,6 +37,10 @@ export class HomePage implements OnInit{
 
   start(){
     this.router.navigate(['clienti'], {relativeTo: this.route});
+  }
+
+  goTo(){
+    this.router.navigate(['pdfView'], {relativeTo: this.route});
   }
 
   /*async noScreen(){

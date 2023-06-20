@@ -41,7 +41,7 @@ export class ListaComandiComponent implements OnInit{
   //  setto il comando scelto
   select(index: number){
    this.comandiService.setComandoScelto(index);
-   let comando = this.comandiService.getComando(index);
+   let comando = this.comandiService.getComandoDesc(index);
 
    if(comando === 'Inclusione ingresso' || comando === 'Esclusione Ingresso'){
      this.openModal = true;
