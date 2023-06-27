@@ -21,6 +21,7 @@ export class FileManagerService{
     return this.writeFileOnDevice(file,name);
   }
 
+  // non viene sovrascritto il file. mkdir restituisce errore
   writeFileOnDevice(file: any, name? : string): Promise<string> {
     let path = '/'  + MAIN_FOLDER_NAME + '/' +name; // path del file
     console.log('controllo path:' + path);
@@ -31,13 +32,14 @@ export class FileManagerService{
     })
       .then( async () => {
         // se la creazione della cartella va a buon fine, scrive file
-        return await this.write(file, path, DATA_DIR);
         console.log('dir creata e file scritto')
+        return await this.write(file, path, DATA_DIR);
       })
       .catch(async () => {
         // se creazione non va, la cartella esiste gia e puo' sovrascrivere il file
-        return await this.write(file, path, DATA_DIR);
         console.log('dir non creata ma file scritto')
+        await this.delete(path, DATA_DIR); // da errore
+        return await this.write(file, path, DATA_DIR);
       })
   }
 
@@ -53,7 +55,7 @@ export class FileManagerService{
       //Solo se scrivo su device e indirizza alla cartella da puntare per il salvataggio.
       blobWriterOptions.directory = directory
     };
-    return  await write_blob(blobWriterOptions)
+    return await write_blob(blobWriterOptions)
   }
 
   // PER CARTELLA DATA
@@ -190,9 +192,20 @@ export class FileManagerService{
         // }
       // }
     }
-
   }
 
+  async delete(file_path: any, directory?: any ){
+    console.log(`delete file_path: ${file_path}`)
+    return await Filesystem.deleteFile({
+      directory: directory,
+      path: file_path,
+    }).then( res => {
+      return true
+    }).catch(err => {
+      console.log(err);
+      return false;
+    });
+  }
   /*async deleteFile(fileType : FileType, name : string) : Promise<boolean>{
     if(this.modeCheckerService.getModSalvataggio() !== 'SD'){
       this.delete(`${this.currentFolder}/${this.getPath(fileType, name)}` ,APP_DIRECTORY);

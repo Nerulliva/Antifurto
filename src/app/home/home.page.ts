@@ -20,8 +20,7 @@ export class HomePage implements OnInit{
               private clientiService: ClientiService,
               private fileManager: FileManagerService,
               private router: Router,
-              private route: ActivatedRoute,
-              private screenOrientation: ScreenOrientation) {}
+              private route: ActivatedRoute,) {}
 
   ngOnInit(): void {
     this.fileManager.printAppFiles();

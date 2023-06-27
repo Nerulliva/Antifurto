@@ -23,45 +23,66 @@ export class ClientiService{
 
   addCliente(cliente: Cliente): void{
     this.clienti.push(cliente);
+    this.clienti.sort((a:any, b:any) => a.nome > b.nome ? 1 : -1);
     const textForSave = JSON.stringify(this.clienti);
-    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
+    this.fileManager.writeFileOnDevice(textForSave, 'clienti').then(res => {
+      this.fileManager.read()
+    });
+
     // console.log(`cliente inserito esterno ${cliente.nome}`)
     // console.log(`cliente dalla lista clienti ${this.clienti[0].nome}`)
   }
 
   modifyCliente(cliente: any, index: number){
+   /* console.log(`index ${index}`)
+    console.log(`prima di modifica ${this.clienti[index].nome}`);*/
     this.clienti[index] = {...this.clienti[index], ...cliente};
+    // console.log(`clientiService cli modificato: ${this.clienti[index].nome}`);//debug
+
+    this.clienti.sort((a:any, b:any) => a.nome > b.nome ? 1 : -1);
     const textForSave = JSON.stringify(this.clienti);
-    this.fileManager.writeFileOnDevice(textForSave, 'clienti');
-    this.print();
+    console.log(`textForSave ${textForSave}`);
+    this.fileManager.writeFileOnDevice(textForSave, 'clienti').then(res=>{
+      // console.log(`writeFile ${res}`);
+      this.fileManager.read().then(res=>{ // prima era fuori
+        console.log(`lettura: ${res[0].nome}`)
+      });//debug
+    });
+
+    // this.print();// debug
   }
 
   deleteCliente(index: number){
     this.clienti.splice(index,1);
+    this.clienti.sort((a:any, b:any) => a.nome > b.nome ? 1 : -1);
     const textForSave = JSON.stringify(this.clienti);
     this.fileManager.writeFileOnDevice(textForSave, 'clienti');
   }
 
   addAntifurto(antifurto: Antifurto){
     this.clienti[this.actived].antifurti?.push(antifurto);
+    this.clienti[this.actived].antifurti.sort((a:any, b:any) => a.nome > b.nome ? 1 : -1);
     const textForSave = JSON.stringify(this.clienti);
     this.fileManager.writeFileOnDevice(textForSave, 'clienti');
   }
 
   deleteAntifurto(index: number){
     this.clienti[this.actived].antifurti.splice(index, 1);
+    this.clienti[this.actived].antifurti.sort((a:any, b:any) => a.nome > b.nome ? 1 : -1);
     const textForSave = JSON.stringify(this.clienti);
     this.fileManager.writeFileOnDevice(textForSave, 'clienti');
   }
 
   modifyAntifurto(antifurto: any, index:number){
     this.clienti[this.actived].antifurti[index] = {...this.clienti[this.actived].antifurti[index], ...antifurto};
+    this.clienti[this.actived].antifurti.sort((a:any, b:any) => a.nome > b.nome ? 1 : -1);
     const textForSave = JSON.stringify(this.clienti);
     this.fileManager.writeFileOnDevice(textForSave, 'clienti');
   }
 
   addIngresso(ingresso: any,index: number){
     this.clienti[this.actived].antifurti[index].ingressi.push(ingresso);
+    this.clienti[this.actived].antifurti[index].ingressi.sort((a:any, b:any) => a.numero > b.numero ? 1 : -1)
     const textForSave = JSON.stringify(this.clienti);
     this.fileManager.writeFileOnDevice(textForSave, 'clienti');
   }
@@ -70,10 +91,12 @@ export class ClientiService{
     this.clienti[this.actived].antifurti[indexAnt].ingressi[indexIng] = {
       ...this.clienti[this.actived].antifurti[indexAnt].ingressi[indexIng], ...ingresso
     };
+    this.clienti[this.actived].antifurti[indexAnt].ingressi.sort((a:any, b:any) => a.numero > b.numero ? 1 : -1)
   }
 
   eliminaIngresso(indexAnt: number, indexIng: number){
     this.clienti[this.actived].antifurti[indexAnt].ingressi.splice(indexIng,1);
+    this.clienti[this.actived].antifurti[indexAnt].ingressi.sort((a:any, b:any) => a.numero > b.numero ? 1 : -1)
     const textForSave = JSON.stringify(this.clienti);
     this.fileManager.writeFileOnDevice(textForSave, 'clienti');
   }
@@ -123,7 +146,7 @@ export class ClientiService{
   print() {
     for (const x of this.clienti) {
       console.log(`Clienti-service: nome ${x.nome}`);
-      console.log(`Clienti-service: conome ${x.cognome}`);
+      console.log(`Clienti-service: cognome ${x.cognome}`);
       // console.log(`Clienti-service: anti ${x.antifurti}`);
     }
   }

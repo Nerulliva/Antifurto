@@ -47,10 +47,10 @@ export class ListaClientiComponents implements OnInit,OnDestroy{
 
     let modalita = tipo && tipo==='addCliente' ? 'addCliente' : 'modifyCliente';
     let title  = tipo && tipo==='addCliente' ? 'Aggiungi Account' : 'Modifica Account';
-    let i = index ? index : null;
+    let i = index!=null ? index : null;
     let clienteData = modalita === 'modifyCliente' ? cliente : null;
-    // console.log(`index manCli ${i}`)
-    // console.log(`index arg manCli ${index}`)
+    /* console.log(`index manageCliente ${i}`) // debug
+     console.log(`index arg manCli ${index}`)*/
 
     this.modal = await this.modalCtrl.create({
       component: ClienteModalComponent,

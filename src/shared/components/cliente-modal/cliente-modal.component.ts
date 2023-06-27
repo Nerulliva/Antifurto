@@ -25,6 +25,8 @@ export class ClienteModalComponent implements OnInit{
   indexIng: number;
   // @ts-ignore
   data: any;
+  // @ts-ignore
+  tecnico = {isChecked: false};
 
   constructor(private modalCtrl: ModalController,
               public formsBuilder: FormBuilder,
@@ -41,7 +43,8 @@ export class ClienteModalComponent implements OnInit{
     } else if (this.tipo === 'addIngresso' || this.tipo === 'modifyIng'){
       this.initForAddIngresso();
     }
-    console.log(this.index);
+    console.log(`index apertura modale ${this.index}`);
+    // console.log(this.formData.controls);
   }
 
   initForAddCliente(){
@@ -49,11 +52,13 @@ export class ClienteModalComponent implements OnInit{
       this.formData = new FormGroup({
         'nome': new FormControl(null, Validators.required),
         'cognome': new FormControl(null, Validators.required),
+        'tecnico': new FormControl(false)
       });
     } else {
       this.formData = new FormGroup({
         'nome': new FormControl(this.data.nome, Validators.required),
         'cognome': new FormControl(this.data.cognome, Validators.required),
+        'tecnico': new FormControl(this.data.tecnico)
       });
     }
 
@@ -94,13 +99,16 @@ export class ClienteModalComponent implements OnInit{
    onSubmit() {
 
     if (this.tipo === 'addCliente') {
+
       let cliente: Cliente = {
         nome: this.formData.get('nome')?.value,
         cognome: this.formData.get('cognome')?.value,
         antifurti: [], // riguardare questo
+        tecnico: this.formData.get('tecnico')?.value
       }
       this.clientiService.addCliente(cliente);
       this.modalCtrl.dismiss(cliente,'confirm');
+      console.log(this.formData.get('tecnico')?.value);
     }
     else if (this.tipo === 'addAntif') {
       let antifurto: Antifurto = {
@@ -115,8 +123,10 @@ export class ClienteModalComponent implements OnInit{
      else if(this.tipo === 'modifyCliente'){
       let cliente = {
         nome: this.formData.get('nome')?.value,
-        cognome: this.formData.get('cognome')?.value
+        cognome: this.formData.get('cognome')?.value,
+        tecnico: this.formData.get('tecnico')?.value
       }
+      console.log(`index on submit ${this.index}`)
       this.clientiService.modifyCliente(cliente, this.index);
       this.modalCtrl.dismiss(cliente,'confirm');
     }
@@ -177,5 +187,12 @@ export class ClienteModalComponent implements OnInit{
 
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  // usata per debug con (ionChange)
+  change(){
+    this.tecnico.isChecked = this.formData.get('tecnico')?.value;
+    console.log(this.tecnico.isChecked);
+    // console.log(this.formData.controls);
   }
 }

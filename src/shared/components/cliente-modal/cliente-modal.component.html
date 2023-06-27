@@ -31,7 +31,12 @@
                 formControlName="cognome">
               </ion-input>
             </ion-item>
+            <ion-item lines="none">
+              <ion-label position="start"><strong>Tecnico</strong></ion-label>
+              <ion-checkbox slot="end" formControlName="tecnico"></ion-checkbox>
+            </ion-item>
           </div>
+
           <!--AGGIUNGI / MODIFICA ANTIFURTO-->
           <div *ngIf="tipo === 'addAntif' || tipo === 'modifyAnt'">
             <ion-item lines="full">

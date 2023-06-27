@@ -19,6 +19,8 @@ export class ListaComandiComponent implements OnInit{
   ingressi: any;
   indexAntifurto: any;
 
+  tecnico: boolean | undefined;
+
   constructor(private clientiService: ClientiService,
               private comandiService: ComandiService,
               private navCtrl: NavController,
@@ -33,8 +35,11 @@ export class ListaComandiComponent implements OnInit{
       this.comandiService.setCodCliente(this.clientiService.getActivedCliente().antifurti[this.indexAntifurto].codiceCliente);
     });
 
-    this.comandi = this.comandiService.getComandi();
-    this.comandi.sort((a:any, b:any) => a[1] > b[1] ? 1 : -1);
+    this.tecnico = this.clientiService.getActivedCliente().tecnico;
+    console.log(`From CS in comandi: ${this.clientiService.getActivedCliente().tecnico}`)
+    console.log(`tecnico list comandi: ${this.tecnico}`);
+    this.comandi = this.tecnico ? this.comandiService.getComandi() : this.comandiService.getSimpleComandi();
+    // this.comandi.sort((a:any, b:any) => a[1] > b[1] ? 1 : -1);
     this.nomeCliente = this.clientiService.getNominativo();
   }
 

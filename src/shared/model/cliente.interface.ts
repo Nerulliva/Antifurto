@@ -2,6 +2,7 @@ export interface Cliente{
   nome: string;
   cognome: string;
   antifurti: Antifurto[];
+  tecnico: boolean
 }
 
 export interface Antifurto{

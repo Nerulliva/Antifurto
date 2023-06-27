@@ -55,6 +55,10 @@ export class ComandiService{
     return this.comandi.getComandoDesc(index);
   }
 
+  getSimpleComandi(){
+    return this.comandi.getComandiSimpleUser();
+  }
+
   composeMessage(): string {
     let baseString = `C.${this.codCliente} #`;
     console.log(`COM SERVICE: ${this.comandoScelto}`)

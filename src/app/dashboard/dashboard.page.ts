@@ -57,7 +57,7 @@ export class DashboardPage implements OnInit, OnDestroy{
           this.antifurto = this.clienteService.getCliente(this.idc).antifurti[this.index];
           this.nomeCliente = this.clienteService.getNominativo();
           this.nomeAntifurto = this.antifurto?.nome;
-          // console.log(`Dashboard: clienti in subscribe ${JSON.stringify(res)}`);
+           //console.log(`Dashboard: clienti in subscribe ${JSON.stringify(res)}`);
           // console.log(`Dashboard: antifurto in subscribe ${JSON.stringify(this.antifurto)}`);
         });
         // scelte comandi con eventuali ingressi fatte dal cliente

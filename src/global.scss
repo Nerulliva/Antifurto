@@ -43,6 +43,7 @@ ion-toast.custom-toast::part(message) {
   text-align: center;
 }
 
-toolbar-container{
+.toolbar-container{
   height: 40px;
+  //min-height: 40px!important;
 }

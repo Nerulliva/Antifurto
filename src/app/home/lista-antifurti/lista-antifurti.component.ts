@@ -45,6 +45,7 @@ export class ListaAntifurtiComponent implements OnInit {
     let modalita = tipo ==='addAntif' ? 'addAntif' : 'modifyAnt'
     let titolo = tipo === 'addAntif' ? 'Aggiungi Antifurto' : 'Modifica Antifurto';
     let antifData = modalita === 'modifyAnt' ? antifurto : null;
+    let i = index != null ? index : null;
 
     this.modal = await this.modalCtrl.create({
       component: ClienteModalComponent,
@@ -53,7 +54,7 @@ export class ListaAntifurtiComponent implements OnInit {
       componentProps: {
         "titolo": titolo,
         "tipo": modalita,
-        "index": index,
+        "index": i,
         "data": antifData
       }
     });
